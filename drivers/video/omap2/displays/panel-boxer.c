@@ -89,7 +89,11 @@ static int boxer_panel_probe(struct omap_dss_device *dssdev)
 			       OMAP_DSS_LCD_IHS | OMAP_DSS_LCD_IPC;
 	dssdev->panel.timings = boxer_panel_timings;
 	dssdev->get_resolution = boxer_get_resolution;
+#ifdef CONFIG_FB_OMAP2_32_BPP
 	dssdev->panel.recommended_bpp = 24;
+#else
+    dssdev->panel.recommended_bpp = 16;
+#endif
 	return 0;
 }
 
