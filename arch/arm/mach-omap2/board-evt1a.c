@@ -103,7 +103,7 @@ static void __init omap_evt_init(void)
 }
 
 
-MACHINE_START(OMAP3621_EVT1A, "OMAP3621 EVT1A board")
+MACHINE_START(OMAP3621_EVT1A, "encore")
 	.phys_io        = L4_34XX_PHYS,
 	.io_pg_offst    = ((L4_34XX_VIRT) >> 18) & 0xfffc,
 	.boot_params	= 0x80000100,
