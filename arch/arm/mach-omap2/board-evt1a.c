@@ -33,6 +33,34 @@
 #include "sdram-hynix-h8mbx00u0mer-0em.h"
 #endif
 
+#ifdef CONFIG_BT_WILINK
+#include <linux/skbuff.h>
+#include <linux/ti_wilink_st.h>
+#endif
+
+#ifdef CONFIG_TI_ST
+/* wl128x BT, FM, GPS connectivity chip */
+struct ti_st_plat_data wilink_pdata = {
+        .nshutdown_gpio = 60,
+        .dev_name = "/dev/ttyO1",
+        .flow_cntrl = 1,
+        .baud_rate = 115200 // was 3000000,
+};
+
+static struct platform_device kim_wl127x_device = {
+        .name           = "kim",
+        .id             = -1,
+        .dev.platform_data = &wilink_pdata,
+};
+
+#endif
+#ifdef CONFIG_BT_WILINK
+static struct platform_device btwilink_device = {
+       .name = "btwilink",
+       .id = -1,
+};
+#endif
+
 void __init evt_peripherals_init(void);
 
 #ifdef CONFIG_ANDROID_RAM_CONSOLE
@@ -100,6 +128,16 @@ static void __init omap_evt_init(void)
 	pr_info("CPU variant: %s Board: %s\n",
 	    cpu_is_omap3622() ? "OMAP3622" : "OMAP3621",
 	    has_1GHz_support() ? "1GHz" : "800MHz only");
+
+#ifdef CONFIG_TI_ST
+  printk("encore: registering wl127x device.\n");
+        platform_device_register(&kim_wl127x_device);
+#endif
+#ifdef CONFIG_BT_WILINK
+  printk("encore: registering btwilink device.\n");
+        platform_device_register(&btwilink_device);
+#endif
+
 }
 
 
