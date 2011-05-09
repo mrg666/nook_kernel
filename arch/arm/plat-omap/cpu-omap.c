@@ -212,7 +212,7 @@ static int __init omap_cpu_init(struct cpufreq_policy *policy)
 #endif
 
 	/* FIXME: what's the actual transition time? */
-	policy->cpuinfo.transition_latency = 300 * 1000;
+	policy->cpuinfo.transition_latency = 60 * 1000;
 #ifdef CONFIG_SMP
 	policy->shared_type = CPUFREQ_SHARED_TYPE_ANY;
 	cpumask_or(omap_cpus, cpumask_of(policy->cpu), omap_cpus);
