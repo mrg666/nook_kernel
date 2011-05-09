@@ -6,6 +6,7 @@
 /* MPU speeds */
 #define S1200M	1200000000
 #define S1000M	1000000000
+#define S925M   925000000
 #define S800M	800000000
 #define S600M   600000000
 #define S550M   550000000
@@ -41,7 +42,7 @@ static struct omap_opp omap3630_mpu_rate_table[] = {
 	/*OPP3 (OPP130) - 1.26V*/
 	{S800M, VDD1_OPP3, 0x38, 0x0, 0x0, 0x0},
 	/*OPP4 (OPP-1G) - 1.35V*/
-	{S1000M, VDD1_OPP4, 0x3C, 0x0, 0x0, 0x0},
+	{S925M, VDD1_OPP4, 0x38, 0x0, 0x0, 0x0},
 	/*OPP5 (OPP-1.3G) - 1.38V*/
 	{S1200M, VDD1_OPP5, 0x3E, 0x0, 0x0, 0x0},
 
