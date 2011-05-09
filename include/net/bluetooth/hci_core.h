@@ -1,6 +1,6 @@
 /* 
    BlueZ - Bluetooth protocol stack for Linux
-   Copyright (C) 2000-2001 Qualcomm Incorporated
+   Copyright (c) 2000-2001, 2010, Code Aurora Forum. All rights reserved.
 
    Written 2000,2001 by Maxim Krasnyansky <maxk@qualcomm.com>
 
@@ -107,7 +107,7 @@ struct hci_dev {
 	unsigned long	acl_last_tx;
 	unsigned long	sco_last_tx;
 
-	struct workqueue_struct *workqueue;
+	struct workqueue_struct	*workqueue;
 
 	struct tasklet_struct	cmd_task;
 	struct tasklet_struct	rx_task;
@@ -137,7 +137,7 @@ struct hci_dev {
 
 	atomic_t 		promisc;
 
-        struct dentry           *debugfs;
+	struct dentry		*debugfs;
 
 	struct device		*parent;
 	struct device		dev;
@@ -250,6 +250,7 @@ enum {
 	HCI_CONN_ENCRYPT_PEND,
 	HCI_CONN_RSWITCH_PEND,
 	HCI_CONN_MODE_CHANGE_PEND,
+	HCI_CONN_SCO_SETUP_PEND,
 };
 
 static inline void hci_conn_hash_init(struct hci_dev *hdev)
@@ -330,6 +331,7 @@ void hci_acl_connect(struct hci_conn *conn);
 void hci_acl_disconn(struct hci_conn *conn, __u8 reason);
 void hci_add_sco(struct hci_conn *conn, __u16 handle);
 void hci_setup_sync(struct hci_conn *conn, __u16 handle);
+void hci_sco_setup(struct hci_conn *conn, __u8 status);
 
 struct hci_conn *hci_conn_add(struct hci_dev *hdev, int type,
 					__u16 pkt_type, bdaddr_t *dst);
@@ -378,17 +380,17 @@ static inline void hci_conn_put(struct hci_conn *conn)
 /* ----- HCI tasks ----- */
 static inline void hci_sched_cmd(struct hci_dev *hdev)
 {
-	tasklet_schedule(&hdev->cmd_task);
+         tasklet_schedule(&hdev->cmd_task);
 }
 
 static inline void hci_sched_rx(struct hci_dev *hdev)
 {
-	tasklet_schedule(&hdev->rx_task);
+         tasklet_schedule(&hdev->rx_task);
 }
 
 static inline void hci_sched_tx(struct hci_dev *hdev)
 {
-	tasklet_schedule(&hdev->tx_task);
+         tasklet_schedule(&hdev->tx_task);
 }
 
 /* ----- HCI Devices ----- */
@@ -446,27 +448,28 @@ int hci_inquiry(void __user *arg);
 void hci_event_packet(struct hci_dev *hdev, struct sk_buff *skb);
 
 /* Receive frame from HCI drivers */
-static inline int hci_recv_frame(struct sk_buff *skb)
-{
-	struct hci_dev *hdev = (struct hci_dev *) skb->dev;
-	if (!hdev || (!test_bit(HCI_UP, &hdev->flags) 
-			&& !test_bit(HCI_INIT, &hdev->flags))) {
-		kfree_skb(skb);
-		return -ENXIO;
-	}
+ static inline int hci_recv_frame(struct sk_buff *skb)
+ {
+         struct hci_dev *hdev = (struct hci_dev *) skb->dev;
+         if (!hdev || (!test_bit(HCI_UP, &hdev->flags) 
+                         && !test_bit(HCI_INIT, &hdev->flags))) {
+                 kfree_skb(skb);
+                 return -ENXIO;
+         }
 
-	/* Incomming skb */
-	bt_cb(skb)->incoming = 1;
+         /* Incomming skb */
+         bt_cb(skb)->incoming = 1;
 
-	/* Time stamp */
-	__net_timestamp(skb);
+         /* Time stamp */
+         __net_timestamp(skb);
 
-	/* Queue frame for rx task */
-	skb_queue_tail(&hdev->rx_q, skb);
-	hci_sched_rx(hdev);
-	return 0;
+         /* Queue frame for rx task */
+         skb_queue_tail(&hdev->rx_q, skb);
+         hci_sched_rx(hdev);
+         return 0;
 }
 
+//int hci_recv_frame(struct sk_buff *skb);
 int hci_recv_fragment(struct hci_dev *hdev, int type, void *data, int count);
 
 int hci_register_sysfs(struct hci_dev *hdev);
@@ -719,3 +722,4 @@ struct hci_sec_filter {
 void hci_req_complete(struct hci_dev *hdev, int result);
 
 #endif /* __HCI_CORE_H */
+

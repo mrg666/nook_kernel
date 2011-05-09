@@ -43,7 +43,7 @@
 #define HCI_NOTIFY_CONN_DEL		2
 #define HCI_NOTIFY_VOICE_SETTING	3
 
-/* HCI device types */
+/* HCI bus types */
 #define HCI_VIRTUAL	0
 #define HCI_USB		1
 #define HCI_PCCARD	2
@@ -53,8 +53,8 @@
 #define HCI_SDIO	6
 
 /* HCI controller types */
-#define HCI_BREDR       0x00
-#define HCI_80211       0x01
+#define HCI_BREDR	0x00
+#define HCI_80211	0x01
 
 /* HCI device quirks */
 enum {
@@ -1043,3 +1043,4 @@ struct hci_inquiry_req {
 #define IREQ_CACHE_FLUSH 0x0001
 
 #endif /* __HCI_H */
+
