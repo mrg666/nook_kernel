@@ -44,7 +44,11 @@ int cpufreq_frequency_table_cpuinfo(struct cpufreq_policy *policy,
 	}
 
 	policy->min = policy->cpuinfo.min_freq = min_freq;
+#ifdef CONFIG_MACH_OMAP3621_EVT1A
+    policy->cpuinfo.max_freq = max_freq;
+#else
 	policy->max = policy->cpuinfo.max_freq = max_freq;
+#endif
 
 	if (policy->min == ~0)
 		return -EINVAL;
