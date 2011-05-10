@@ -40,11 +40,23 @@
 
 #ifdef CONFIG_TI_ST
 /* wl128x BT, FM, GPS connectivity chip */
+int plat_kim_suspend(struct platform_device *pdev, pm_message_t state)
+{ 
+    return 0;
+}
+
+int plat_kim_resume(struct platform_device *pdev)
+{
+    return 0;
+}
+
 struct ti_st_plat_data wilink_pdata = {
         .nshutdown_gpio = 60,
         .dev_name = "/dev/ttyO1",
         .flow_cntrl = 1,
         .baud_rate = 3000000,
+        .suspend = plat_kim_suspend,
+        .resume = plat_kim_resume,
 };
 
 static struct platform_device kim_wl127x_device = {
