@@ -1159,6 +1159,7 @@ static int musb_gadget_queue(struct usb_ep *ep, struct usb_request *req,
 	struct musb		*musb;
 	int			status = 0;
 	unsigned long		lockflags;
+    struct usb_request  *r, *tmp;
 
 	if (!ep || !req)
 		return -EINVAL;
@@ -1215,6 +1216,17 @@ static int musb_gadget_queue(struct usb_ep *ep, struct usb_request *req,
 		status = -ESHUTDOWN;
 		goto cleanup;
 	}
+
+    /* If we have the request already, kill the offender */
+    list_for_each_entry_safe(r, tmp, &musb_ep->req_list, list) {
+        if (to_musb_request(r) != request)
+            continue;
+        WARN_ON(1);
+        send_sig(SIGKILL, current, 0);
+        status = -ESHUTDOWN;
+        goto cleanup;
+    }
+    
 
 	/* add request to the list */
 	list_add_tail(&(request->request.list), &(musb_ep->req_list));
