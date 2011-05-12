@@ -101,12 +101,9 @@ static void __init omap_evt_init_irq(void)
 	omap_board_config = evt_config;
 	omap_board_config_size = ARRAY_SIZE(evt_config);
 	omap_init_irq();
-#ifdef CONFIG_ENCORE_MPU_STOCK
+
 	l3_rate_table = (cpu_is_omap3622() && has_1GHz_support()) ? omap3630_l3_rate_table
 				: omap3621_l3_rate_table;
-#else
-    l3_rate_table = omap3630_l3_rate_table;
-#endif
 
 #if defined(CONFIG_MACH_OMAP3621_EVT1A) && defined (CONFIG_MACH_SDRAM_HYNIX_H8MBX00U0MER0EM_OR_SAMSUNG_K4X4G303PB)
 	omap2_init_common_hw(	h8mbx00u0mer0em_K4X4G303PB_sdrc_params,
