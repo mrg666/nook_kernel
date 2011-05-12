@@ -175,6 +175,29 @@ config MACH_OMAP3621_EVT1A
 	depends on ARCH_OMAP3 && ARCH_OMAP34XX
 	select ARCH_OMAP3621
 
+choice
+    bool "Encore clock speed"
+    default ENCORE_MPU_STOCK
+    depends on MACH_OMAP3621_EVT1A
+
+config ENCORE_MPU_STOCK
+    bool "Stock clock speed for OMAP3621"
+    depends on MACH_OMAP3621_EVT1A
+
+config ENCORE_MPU_925MHZ
+    bool "Overclock MPU up to 925mhz"
+    depends on MACH_OMAP3621_EVT1A
+
+config ENCORE_MPU_1100MHZ
+    bool "Overclock MPU up to 1100mhz"
+    depends on MACH_OMAP3621_EVT1A
+
+config ENCORE_MPU_1200MHZ
+    bool "Overclock MPU up to 1200mhz"
+    depends on MACH_OMAP3621_EVT1A
+
+endchoice
+
 config WLAN_POWER_EVT1
 	bool "WLAN power support"
 	depends on MACH_OMAP3621_EVT1A

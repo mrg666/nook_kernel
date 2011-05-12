@@ -5,6 +5,7 @@
 
 /* MPU speeds */
 #define S1200M	1200000000
+#define S1100M  1100000000
 #define S1000M	1000000000
 #define S925M   925000000
 #define S800M	800000000
@@ -41,11 +42,27 @@ static struct omap_opp omap3630_mpu_rate_table[] = {
 	{S600M, VDD1_OPP2, 0x2D, 0x0, 0x0, 0x0},
 	/*OPP3 (OPP130) - 1.26V*/
 	{S800M, VDD1_OPP3, 0x38, 0x0, 0x0, 0x0},
+#ifdef CONFIG_ENCORE_MPU_925MHZ    
 	/*OPP4 (OPP-1G) - 1.35V*/
 	{S925M, VDD1_OPP4, 0x38, 0x0, 0x0, 0x0},
 	/*OPP5 (OPP-1.3G) - 1.38V*/
 	{S1200M, VDD1_OPP5, 0x3E, 0x0, 0x0, 0x0},
-
+#elif CONFIG_ENCORE_MPU_1100MHZ
+	/*OPP4 (OPP-1G) - 1.35V*/
+	{S1000M, VDD1_OPP4, 0x3d, 0x0, 0x0, 0x0},
+	/*OPP5 (OPP-1.3G) - 1.38V*/
+	{S1100M, VDD1_OPP5, 0x3c, 0x0, 0x0, 0x0},
+#elif CONFIG_ENCORE_MPU_1200MHZ
+	/*OPP4 (OPP-1G) - 1.35V*/
+	{S1100M, VDD1_OPP4, 0x3d, 0x0, 0x0, 0x0},
+	/*OPP5 (OPP-1.3G) - 1.38V*/
+	{S1200M, VDD1_OPP5, 0x3e, 0x0, 0x0, 0x0},
+#else
+	/*OPP4 (OPP-1G) - 1.35V*/
+	{S1000M, VDD1_OPP4, 0x38, 0x0, 0x0, 0x0},
+	/*OPP5 (OPP-1.3G) - 1.38V*/
+	{S1200M, VDD1_OPP5, 0x3E, 0x0, 0x0, 0x0},
+#endif
 };
 
 static struct omap_opp omap3630_l3_rate_table[] = {

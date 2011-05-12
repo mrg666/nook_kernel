@@ -386,7 +386,13 @@ u8 omap_pm_get_max_vdd1_opp()
 	if (cpu_is_omap3622() && has_1GHz_support()) {
 		return VDD1_OPP4;
 	} else if (cpu_is_omap3621()) {
+#ifdef CONFIG_ENCORE_MPU_925MHZ
 		return VDD1_OPP4;
+#elif CONFIG_ENCORE_MPU_1100MHZ || CONFIG_ENCORE_MPU_1200MHZ
+        return VDD1_OPP5;
+#else
+        return VDD1_OPP3;
+#endif
 	} else if (cpu_is_omap3630()) {
 		/*
 		 * Check if VDD1 OPP5 has the right fused value, if 0
