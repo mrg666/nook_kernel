@@ -639,6 +639,11 @@ void cyttsp_xy_worker(struct work_struct *work)
 		 if (tilt)
                         FLIP_XY(g_xy_data.x4, g_xy_data.y4);
 
+		if(g_xy_data.x4 <= 5) g_xy_data.x4 = 5;
+		if(g_xy_data.x4 >= ts->platform_data->maxx -5) g_xy_data.x4 = ts->platform_data->maxx - 5;
+		if(g_xy_data.y4 <= 5) g_xy_data.y4 = 5;
+		if(g_xy_data.y4 >= ts->platform_data->maxy -5) g_xy_data.y4 = ts->platform_data->maxy - 5;
+
 		id = GET_TOUCH4_ID(g_xy_data.touch34_id);
 		if (ts->platform_data->use_trk_id) {
 			cur_mt_pos[CY_MT_TCH4_IDX][CY_XPOS] =
@@ -686,6 +691,12 @@ void cyttsp_xy_worker(struct work_struct *work)
 			g_xy_data.y3 =
 				INVERT_X(g_xy_data.y3, ts->platform_data->maxy);
 		}
+
+		if(g_xy_data.x3 <= 5) g_xy_data.x3 = 5;
+		if(g_xy_data.x3 >= ts->platform_data->maxx -5) g_xy_data.x3 = ts->platform_data->maxx - 5;
+		if(g_xy_data.y3 <= 5) g_xy_data.y3 = 5;
+		if(g_xy_data.y3 >= ts->platform_data->maxy -5) g_xy_data.y3 = ts->platform_data->maxy - 5;
+
 		id = GET_TOUCH3_ID(g_xy_data.touch34_id);
 		if (ts->platform_data->use_trk_id) {
 			cur_mt_pos[CY_MT_TCH3_IDX][CY_XPOS] =
@@ -733,6 +744,12 @@ void cyttsp_xy_worker(struct work_struct *work)
 			g_xy_data.y2 =
 				INVERT_X(g_xy_data.y2, ts->platform_data->maxy);
 		}
+
+		if(g_xy_data.x2 <= 5) g_xy_data.x2 = 5;
+		if(g_xy_data.x2 >= ts->platform_data->maxx -5) g_xy_data.x2 = ts->platform_data->maxx - 5;
+		if(g_xy_data.y2 <= 5) g_xy_data.y2 = 5;
+		if(g_xy_data.y2 >= ts->platform_data->maxy -5) g_xy_data.y2 = ts->platform_data->maxy - 5;
+
 		id = GET_TOUCH2_ID(g_xy_data.touch12_id);
 		if (ts->platform_data->use_trk_id) {
 			cur_mt_pos[CY_MT_TCH2_IDX][CY_XPOS] =
@@ -780,6 +797,11 @@ void cyttsp_xy_worker(struct work_struct *work)
 			g_xy_data.y1 =
 				INVERT_X(g_xy_data.y1, ts->platform_data->maxy);
 		}
+
+		if(g_xy_data.x1 <= 5) g_xy_data.x1 = 5;
+		if(g_xy_data.x1 >= ts->platform_data->maxx -5) g_xy_data.x1 = ts->platform_data->maxx - 5;
+		if(g_xy_data.y1 <= 5) g_xy_data.y1 = 5;
+		if(g_xy_data.y1 >= ts->platform_data->maxy -5) g_xy_data.y1 = ts->platform_data->maxy - 5;
 
 		id = GET_TOUCH1_ID(g_xy_data.touch12_id);
 		if (ts->platform_data->use_trk_id) {
