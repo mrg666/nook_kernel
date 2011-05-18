@@ -83,6 +83,9 @@
 #include <sound/tlv.h>
 #include <asm/div64.h>
 
+#include <linux/sysfs.h>
+#include <linux/miscdevice.h>
+
 #include "tlv320dac3100.h"
 #include <mach/gpio.h>
 
@@ -166,6 +169,9 @@ static int dac3100_set_dai_fmt(struct snd_soc_dai *codec_dai, unsigned int fmt);
 static int dac3100_set_bias_level(struct snd_soc_codec *codec, enum snd_soc_bias_level level);
 
 unsigned int dac3100_read(struct snd_soc_codec *codec, unsigned int reg);
+int dac3100_write (struct snd_soc_codec *codec, unsigned int reg,
+                   unsigned int value);
+
 
 static int dac3100_hw_free (struct snd_pcm_substream *substream, struct snd_soc_dai *device);
 
@@ -193,6 +199,20 @@ static irqreturn_t dac3100_irq_handler(int irq, void *data);
 static int dac3100_power_down(struct snd_soc_codec *codec);
 static int dac3100_power_up(struct snd_soc_codec *codec);
 static int dac3100_mute_codec (struct snd_soc_codec *codec, int mute);
+
+static int dac_level_show(struct device *dev,
+        struct device_attribute *attr, char *buf);
+static int dac_level_store(struct device *dev,
+        struct device_attribute *attr, char *buf);
+static int hp_analog_gain_show(struct device *dev,
+        struct device_attribute *attr, char *buf);
+static int hp_analog_gain_store(struct device *dev,
+        struct device_attribute *attr, char *buf);
+static int spkr_analog_gain_show(struct device *dev,
+        struct device_attribute *attr, char *buf);
+static int spkr_analog_gain_store(struct device *dev,
+        struct device_attribute *attr, char *buf);
+
 /*
 *****************************************************************************
 * Global Variable
@@ -211,6 +231,12 @@ struct dac3100_priv dac3100_codec_data;
 
 /* snd_soc_codec pointer variable shared between I2C and Codec Probe routines */
 static struct snd_soc_codec *dac3100_codec;
+
+static int right_dac_gain = 0xFC;
+static int left_dac_gain = 0xFC;
+static int hp_r_analog_gain = 0x9E;
+static int hp_l_analog_gain = 0x9E;
+static int spkr_analog_gain = 0x80;
 
 /*
 *****************************************************************************
@@ -734,6 +760,33 @@ static const struct snd_soc_dapm_route dac3100_dapm_routes[] = {
 static void i2c_dac3100_headset_access_work(struct work_struct *work);
 static struct work_struct works;
 static struct snd_soc_codec *codec_work_var_glob;
+
+
+static DEVICE_ATTR(dac_level, S_IRUGO | S_IWUGO,
+        dac_level_show, dac_level_store);
+
+static DEVICE_ATTR(hp_analog_gain, S_IRUGO | S_IWUGO,
+        hp_analog_gain_show, hp_analog_gain_store);
+
+static DEVICE_ATTR(spkr_analog_gain, S_IRUGO | S_IWUGO,
+        spkr_analog_gain_show, spkr_analog_gain_store);
+
+static struct attribute *encore_sound_attrs[]= {
+    &dev_attr_dac_level.attr,
+    &dev_attr_hp_analog_gain.attr,
+    &dev_attr_spkr_analog_gain.attr,
+    NULL
+};
+
+static struct attribute_group encore_sound_group = {
+    .attrs = encore_sound_attrs,
+};
+
+static struct miscdevice encore_sound_device = {
+    .minor = MISC_DYNAMIC_MINOR,
+    .name = "tlv320dac3100_tweaks",
+};
+
 
 /*
 *****************************************************************************
@@ -1368,6 +1421,10 @@ void dac3100_config_hp_volume (struct snd_soc_codec *codec, int mute)
          * Move from 0 db to -35.2 db
          */
 	if (mute > 0) {
+        dac3100_write(dac3100_codec, LEFT_ANALOG_HPL, 255);
+        dac3100_write(dac3100_codec, RIGHT_ANALOG_HPR, 255);
+
+#if 0
 		pReg = &dac3100->hp_analog_right_vol[0];
 
 		for (count = 0, regval = 0; regval <= 30; count++, regval +=1) {
@@ -1386,10 +1443,15 @@ void dac3100_config_hp_volume (struct snd_soc_codec *codec, int mute)
                 reg_update_count = count - 1;
                 DBG("##CFG_HP_VOL count %d reg_update %d regval %d\n", count,
                     reg_update_count, regval);
+#endif               
 	} else {
 		/* User has requested to unmute or bring up the Headphone Analog
                  * Volume Move from -35.2 db to 0 db
 	         */
+        dac3100_write(dac3100_codec, LEFT_ANALOG_HPL, hp_l_analog_gain);
+        dac3100_write(dac3100_codec, RIGHT_ANALOG_HPR, hp_r_analog_gain);
+
+#if 0
 		pReg = &dac3100->hp_analog_right_vol[0];
 
                 low_value = (dac3100_read(codec, RIGHT_ANALOG_HPR) & 0x7F);
@@ -1411,6 +1473,7 @@ void dac3100_config_hp_volume (struct snd_soc_codec *codec, int mute)
                 reg_update_count = count;
                 DBG("##CFG_HP_VOL count %d reg_update %d regval %d\n",
                     count, reg_update_count, regval);
+#endif
 	}
 
 	/* Change to Page 1 */
@@ -1497,7 +1560,7 @@ static int dac3100_mute_codec (struct snd_soc_codec *codec, int mute)
 #else
                     /* Bring the HP Analog Volume Control Registers back to default value */
                     value = dac3100_read (codec, RIGHT_ANALOG_HPR);
-                    while (value < 0x9F) {
+                    while (value < hp_l_analog_gain) {
                             value++;
                             dac3100_write (codec, RIGHT_ANALOG_HPR, value);
                             mdelay(2);
@@ -1551,8 +1614,8 @@ static int dac3100_mute_codec (struct snd_soc_codec *codec, int mute)
                         value = (dac3100_read(codec, DAC_CHN_REG) & 0xC3);
                         dac3100_write(codec, DAC_CHN_REG, (value | LDAC_2_LCHN | RDAC_2_RCHN));
                 	/* Restore the values of the DACL and DACR */
-                	dac3100_write (codec, LDAC_VOL, 0xFC);
-                	dac3100_write (codec, RDAC_VOL, 0xFC);
+                	dac3100_write (codec, LDAC_VOL, left_dac_gain);
+                	dac3100_write (codec, RDAC_VOL, right_dac_gain);
 
 			time_out_counter = 0;
                 	do {
@@ -1572,7 +1635,7 @@ static int dac3100_mute_codec (struct snd_soc_codec *codec, int mute)
 #else
                     /* Bring the HP Analog Volume Control Registers back to default value */
                     value = dac3100_read (codec, RIGHT_ANALOG_HPR);
-                    while (value > 0x80) {
+                    while (value > hp_l_analog_gain) {
                             value--;
                             dac3100_write (codec, RIGHT_ANALOG_HPR, value);
                             mdelay(2);
@@ -1609,8 +1672,8 @@ static int dac3100_mute_codec (struct snd_soc_codec *codec, int mute)
                                       (value | LDAC_LCHN_RCHN_2));
 
                 	/* Restore the values of the DACL and DACR */
-                	dac3100_write (codec, LDAC_VOL, 0xFC);
-                	dac3100_write (codec, RDAC_VOL, 0xFC);
+                	dac3100_write (codec, LDAC_VOL, left_dac_gain);
+                	dac3100_write (codec, RDAC_VOL, right_dac_gain);
 
 			time_out_counter = 0;
                 	do {
@@ -1859,7 +1922,7 @@ static int dac3100_power_up (struct snd_soc_codec *codec)
 
 		} else {
                         /* Left Analog Speaker Volume update */
-                        dac3100_write (codec, LEFT_ANALOG_SPL, 0x80);
+                        dac3100_write (codec, LEFT_ANALOG_SPL, spkr_analog_gain);
 
                         /* Switch ON the Class_D Speaker Amplifier */
                         value = dac3100_read (codec, CLASS_D_SPK);
@@ -2378,6 +2441,10 @@ static int dac3100_probe (struct platform_device *pdev)
 
         DBG("-dac3100_probe function exited..\r\n");
 
+    misc_register(&encore_sound_device);
+    sysfs_create_group(&encore_sound_device.this_device->kobj,
+            &encore_sound_group);
+
 	return ret;
 card_err:
         snd_soc_free_pcms(socdev);
@@ -2636,6 +2703,94 @@ static void __exit tlv320dac3100_exit(void)
 }
 
 module_exit(tlv320dac3100_exit);
+
+/*
+*****************************************************************************
+* Sysfs functions
+*****************************************************************************
+*/
+
+static int dac_level_show(struct device *dev,
+        struct device_attribute *attr, char *buf)
+{
+    int gain = dac3100_read(dac3100_codec, LDAC_VOL);
+    gain = max(gain, dac3100_read(dac3100_codec, RDAC_VOL));
+    return sprintf(buf, "%u\n", gain);
+}
+
+static int dac_level_store(struct device *dev,
+        struct device_attribute *attr, char *buf)
+{
+    unsigned short gain;
+    if (sscanf(buf, "%hu", &gain) == 1) {
+        printk("%s: Set DAC Gain %d\n", AUDIO_NAME, gain);
+        if (gain > 255)
+            gain = 255;
+
+        //Store new gain setting
+        left_dac_gain = right_dac_gain = gain;
+
+        //Set DAC gain
+        dac3100_write(dac3100_codec, LDAC_VOL, left_dac_gain);
+        dac3100_write(dac3100_codec, RDAC_VOL, right_dac_gain);
+    }
+}   
+
+static int hp_analog_gain_show(struct device *dev,
+        struct device_attribute *attr, char *buf)
+{
+    int gain = dac3100_read(dac3100_codec, RIGHT_ANALOG_HPR);
+    gain = max(gain, dac3100_read(dac3100_codec, LEFT_ANALOG_HPL));
+    return sprintf(buf, "%u\n", gain);
+}
+
+static int hp_analog_gain_store(struct device *dev,
+        struct device_attribute *attr, char *buf)
+{
+    unsigned short gain;
+    if (sscanf(buf, "%hu", &gain) == 1) {
+        printk("%s: Set HP analog gain %d\n", AUDIO_NAME, gain);
+        if (gain > 255)
+            gain = 255;
+        else if (gain < 128)
+            gain = 128;
+
+        //Store new gain setting
+        hp_r_analog_gain = hp_l_analog_gain = gain;
+
+        //Set HP analog gain
+        dac3100_write(dac3100_codec, RIGHT_ANALOG_HPR, hp_r_analog_gain);
+        dac3100_write(dac3100_codec, LEFT_ANALOG_HPL, hp_l_analog_gain);
+    }
+}
+
+static int spkr_analog_gain_show(struct device *dev,
+        struct device_attribute *attr, char *buf)
+{
+    int gain = dac3100_read(dac3100_codec, RIGHT_ANALOG_SPR);
+    gain = max(gain, dac3100_read(dac3100_codec, LEFT_ANALOG_SPL));
+    return sprintf(buf, "%u\n", gain);
+}
+
+static int spkr_analog_gain_store(struct device *dev,
+        struct device_attribute *attr, char *buf)
+{
+    unsigned short gain;
+    if (sscanf(buf, "%hu", &gain) == 1) {
+        printk("%s: Set HP analog gain %d\n", AUDIO_NAME, gain);
+        if (gain > 255)
+            gain = 255;
+        else if (gain < 128)
+            gain = 128;
+
+        //Store new gain setting
+        spkr_analog_gain = gain;
+
+        //Set HP analog gain
+        dac3100_write(dac3100_codec, RIGHT_ANALOG_SPR, spkr_analog_gain);
+        dac3100_write(dac3100_codec, LEFT_ANALOG_SPL, spkr_analog_gain);
+    }
+}
 
 MODULE_DESCRIPTION("ASoC TLV320dac3100 codec driver");
 MODULE_AUTHOR("s-griffoul@ti.com");
