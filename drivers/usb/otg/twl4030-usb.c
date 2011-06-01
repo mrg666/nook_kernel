@@ -255,6 +255,9 @@
 #define TPS65921_ACCIMR1		0x06
 #define TPS65921_USB_CHRG_TYPE_ISR1	(1 << 0)
 
+#define TWL_PWR_EXT 1
+#define TWL_PWR_INT 0
+
 struct twl4030_usb {
 	struct otg_transceiver	otg;
 	struct device		*dev;
@@ -276,16 +279,19 @@ struct twl4030_usb {
 	bool			irq_enabled;
 	bool			chgd_capable;
 	u8			dtct_status;
-	struct work_struct irq_work;
+	struct work_struct	irq_work;
+	struct work_struct	vbus_work;
 
 	/* Work to initialize the charger status at the init */
 #ifdef CONFIG_CHARGER_MAX8903
 	struct delayed_work     max8903_detect_work;
 #endif
-	
+	int			powersource;
+	int			forcepower;
 };
 
 static struct wake_lock usb_lock;
+int twl_forcelink = 0;
 
 /* internal define on top of container_of */
 #define xceiv_to_twl(x)		container_of((x), struct twl4030_usb, otg);
@@ -398,12 +404,18 @@ static enum usb_xceiv_events twl4030_usb_linkstat(struct twl4030_usb *twl)
 		if (status & BIT(2))
 			linkstat = USB_EVENT_ID;
 		else if (twl->chgd_capable) {
-			linkstat = twl4030_charger_detection(twl);
+			if (twl_forcelink)
+				linkstat = USB_EVENT_VBUS;
+			else
+				linkstat = twl4030_charger_detection(twl);
 		}
 		else 
 			linkstat = USB_EVENT_VBUS;
 	} else {
-		linkstat = USB_EVENT_NONE;
+		if (twl_forcelink)
+			linkstat = USB_EVENT_VBUS;
+		else
+			linkstat = USB_EVENT_NONE;
 	}
 
 #ifdef CONFIG_CHARGER_MAX8903
@@ -423,7 +435,7 @@ static enum usb_xceiv_events twl4030_usb_linkstat(struct twl4030_usb *twl)
 
 	spin_lock_irq(&twl->lock);
 	twl->linkstat = linkstat;
-	if (linkstat == USB_EVENT_ID) {
+	if (linkstat == USB_EVENT_ID || twl_forcelink) {
 		twl->otg.default_a = true;
 		twl->otg.state = OTG_STATE_A_IDLE;
 	} else {
@@ -729,6 +741,68 @@ static ssize_t twl4030_usb_vbus_show(struct device *dev,
 }
 static DEVICE_ATTR(vbus, 0444, twl4030_usb_vbus_show, NULL);
 
+void max8903_enable_charge(u8 enable);
+int max8903_check_power(void);
+
+static ssize_t twl4030_usb_vbussrc_show(struct device *dev,
+		struct device_attribute *attr, char *buf)
+{
+	struct twl4030_usb *twl = dev_get_drvdata(dev);
+	int ret;
+
+	if (twl->forcepower == TWL_PWR_EXT)
+		ret = sprintf(buf, "forced external\n");
+	else
+		ret = sprintf(buf, "%s\n", twl->powersource == TWL_PWR_EXT?
+			      "external":"internal");
+
+	return ret;
+}
+
+static ssize_t twl4030_usb_vbussrc_set(struct device *dev,
+        struct device_attribute *attr, const char *buf, size_t count)
+{
+	struct twl4030_usb *twl = dev_get_drvdata(dev);
+
+	if (count < 8)
+		return -EINVAL;
+
+        if (!strncmp(buf, "external", 8)) {
+		if (twl->forcepower == TWL_PWR_EXT)
+			return count;
+                twl->forcepower = TWL_PWR_EXT;
+		twl4030_usb_clear_bits(twl,TWL4030_OTG_CTRL,
+				       TWL4030_OTG_CTRL_DRVVBUS);
+		if (twl_forcelink) {
+			max8903_enable_charge(1);
+			twl->powersource = TWL_PWR_EXT;
+		}
+        } else if (!strncmp(buf, "internal", 8)) {
+		if (twl->forcepower == TWL_PWR_INT)
+			return count;
+
+		if ((twl->powersource == TWL_PWR_EXT) &&
+		    (twl->forcepower != TWL_PWR_EXT)) {
+			printk("Ignoring switch to internal vbus request, there"
+			       " is external vbus source already!\n");
+			return -EINVAL;
+		}
+                twl->forcepower = TWL_PWR_INT;
+		if (twl_forcelink) {
+			max8903_enable_charge(0);
+			twl4030_usb_set_bits(twl,TWL4030_OTG_CTRL,
+					     TWL4030_OTG_CTRL_DRVVBUS);
+			twl->powersource = TWL_PWR_INT;
+		}
+        } else {
+		return -EINVAL;
+	}
+
+        return count;
+}
+static DEVICE_ATTR(vbussrc, 0644, twl4030_usb_vbussrc_show,
+		   twl4030_usb_vbussrc_set);
+
 static void twl4030_irq_work(struct work_struct *work)
 {
 	struct twl4030_usb *twl = container_of(work, struct twl4030_usb, irq_work);
@@ -788,6 +862,55 @@ static irqreturn_t twl4030_usb_irq(int irq, void *_twl)
 	struct twl4030_usb *twl =_twl;
 	schedule_work(&twl->irq_work);
 	return IRQ_HANDLED;
+}
+
+void *twl_superhack;
+void twl4030_kick_work(struct work_struct *work)
+{
+	struct twl4030_usb *twl = twl_superhack;
+	struct otg_transceiver x = twl->otg;
+
+	if (!twl_forcelink) {
+		twl4030_usb_clear_bits(twl,TWL4030_OTG_CTRL, TWL4030_OTG_CTRL_DRVVBUS);
+		twl4030_usb_irq(0, twl);
+		return;
+	}
+
+#ifdef CONFIG_MACH_OMAP3621_EVT1A
+	/* See if there is power already, then no need to turn on our own */
+	if (twl->forcepower == TWL_PWR_EXT || max8903_check_power()) {
+		twl->powersource = TWL_PWR_EXT;
+		max8903_enable_charge(1);
+	} else
+#endif
+	{
+		twl->powersource = TWL_PWR_INT;
+		twl4030_usb_set_bits(twl,TWL4030_OTG_CTRL,
+				     TWL4030_OTG_CTRL_DRVVBUS);
+	}
+
+	/* Some sleep just in case to let the vbus to stabilize */
+	msleep(100);
+
+	if (x.link_force_active)
+		x.link_force_active(1);
+
+	twl4030_phy_resume(twl);
+
+	otg_notify_event(&twl->otg, USB_EVENT_VBUS, twl->otg.gadget);
+
+	sysfs_notify(&twl->dev->kobj, NULL, "vbus");
+}
+
+void twl4030_kick(int on)
+{
+	struct twl4030_usb *twl = twl_superhack;
+
+	if (twl_forcelink != on) {
+		twl_forcelink = on;
+
+		schedule_work(&twl->vbus_work);
+	}
 }
 
 #ifdef CONFIG_CHARGER_MAX8903
@@ -927,7 +1050,6 @@ static enum usb_xceiv_events twl4030_charger_detection(struct twl4030_usb *twl)
 	return stat;
 }
 
-
 static int __devinit twl4030_usb_probe(struct platform_device *pdev)
 {
 	struct twl4030_usb_data *pdata = pdev->dev.platform_data;
@@ -943,6 +1065,8 @@ static int __devinit twl4030_usb_probe(struct platform_device *pdev)
 	if (!twl)
 		return -ENOMEM;
 
+	twl_superhack = twl;
+
 	twl->dev		= &pdev->dev;
 	twl->irq		= platform_get_irq(pdev, 0);
 	twl->otg.dev		= twl->dev;
@@ -953,6 +1077,7 @@ static int __devinit twl4030_usb_probe(struct platform_device *pdev)
 	twl->usb_mode		= pdata->usb_mode;
 	twl->asleep		= 1;
 	twl->chgd_capable	= twl_rev_is_tps65921();
+	twl->powersource	= TWL_PWR_INT;
 
 	/* init spinlock for workqueue */
 	spin_lock_init(&twl->lock);
@@ -969,11 +1094,15 @@ static int __devinit twl4030_usb_probe(struct platform_device *pdev)
 	if (device_create_file(&pdev->dev, &dev_attr_vbus))
 		dev_warn(&pdev->dev, "could not create sysfs file\n");
 
+	if (device_create_file(&pdev->dev, &dev_attr_vbussrc))
+		dev_warn(&pdev->dev, "could not create sysfs file\n");
+
 	ATOMIC_INIT_NOTIFIER_HEAD(&twl->otg.notifier);
 
 	/* Init work and wakelock before activating IRQ. */
 	wake_lock_init(&usb_lock, WAKE_LOCK_SUSPEND, "musb_wake_lock");
 	INIT_WORK(&twl->irq_work, twl4030_irq_work);
+	INIT_WORK(&twl->vbus_work, twl4030_kick_work);
 
 	/* Our job is to use irqs and status from the power module
 	 * to keep the transceiver disabled when nothing's connected.
