@@ -332,14 +332,19 @@ static ssize_t mpu_freq_store(struct kobject *k,
 
             if ( attr == &mpu_freq_opp1_attr) {
                 mpu_table[1].rate = freq;
+                printk("**** mpu_table[1] set: %u\n", mpu_table[1].rate);
             } else if (attr == &mpu_freq_opp2_attr) {
                 mpu_table[2].rate = freq;
+                printk("**** mpu_table[2] set: %u\n", mpu_table[2].rate);
             } else if (attr == &mpu_freq_opp3_attr) {
                 mpu_table[3].rate = freq;
+                printk("**** mpu_table[3] set: %u\n", mpu_table[3].rate);
             } else if (attr == &mpu_freq_opp4_attr) {
                 mpu_table[4].rate = freq;
+                printk("**** mpu_table[4] set: %u\n", mpu_table[4].rate);
             } else if (attr == &mpu_freq_opp5_attr) {
                 mpu_table[5].rate = freq;
+                printk("**** mpu_table[5] set: %u\n", mpu_table[5].rate);
             }
             clk_init_cpufreq_table(&freq_table);
             struct cpufreq_policy *policy = cpufreq_cpu_get(0);
