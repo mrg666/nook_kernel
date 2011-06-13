@@ -2954,9 +2954,9 @@ unsigned long nr_iowait(void)
 	return sum;
 }
 
-unsigned long nr_iowait_cpu(void)
+unsigned long nr_iowait_cpu(int cpu)
 {
-	struct rq *this = this_rq();
+	struct rq *this = cpu_rq(cpu);
 	return atomic_read(&this->nr_iowait);
 }
 
@@ -10013,13 +10013,9 @@ void sched_destroy_group(struct task_group *tg)
  *	by now. This function just updates tsk->se.cfs_rq and tsk->se.parent to
  *	reflect its new group.
  */
-void sched_move_task(struct task_struct *tsk)
+void __sched_move_task(struct task_struct *tsk, struct rq *rq)
 {
 	int on_rq, running;
-	unsigned long flags;
-	struct rq *rq;
-
-	rq = task_rq_lock(tsk, &flags);
 
 	update_rq_clock(rq);
 
@@ -10042,8 +10038,16 @@ void sched_move_task(struct task_struct *tsk)
 		tsk->sched_class->set_curr_task(rq);
 	if (on_rq)
 		enqueue_task(rq, tsk, 0);
+}
 
-	task_rq_unlock(rq, &flags);
+void sched_move_task(struct task_struct *tsk)
+{
+    struct rq *rq;
+    unsigned long flags;
+
+    rq = task_rq_lock(tsk, &flags);
+    __sched_move_task(tsk, rq);
+    task_rq_unlock(rq, &flags);
 }
 #endif /* CONFIG_GROUP_SCHED */
 
