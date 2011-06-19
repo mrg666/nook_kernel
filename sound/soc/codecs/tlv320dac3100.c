@@ -444,6 +444,12 @@ struct snd_soc_dai tlv320dac3100_dai = {
                 .channels_max = 2,
                 .rates = dac3100_RATES,
                 .formats = dac3100_FORMATS,},
+	.capture = {
+                .stream_name = "Capture",
+                .channels_min = 1,
+                .channels_max = 2,
+                .rates = dac3100_RATES,
+                .formats = dac3100_FORMATS,},
 	.ops = &dac3100_dai_ops,
 };
 
@@ -1386,7 +1392,7 @@ static int dac3100_hw_params (struct snd_pcm_substream *substream,
 	dac3100_write(codec, INTERFACE_SET_REG_1, data);
 
   	/* Switch on the Codec into ON State after all the above configuration */
-//	dac3100_power_up(codec);
+	dac3100_power_up(codec);
 
         /* Add the Processing blocks section as per the discussion with Design team */
         dac3100_write (codec, DAC_INSTRUCTION_SET, 0x03);

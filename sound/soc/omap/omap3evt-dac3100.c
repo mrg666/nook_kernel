@@ -85,7 +85,7 @@ static int omap3evt_hw_params(struct snd_pcm_substream *substream,
 	int err;
 	
 	/* Set codec DAI configuration */
-	err = codec_dai->ops->set_fmt(codec_dai,
+	err = snd_soc_dai_set_fmt(codec_dai,
 					 SND_SOC_DAIFMT_I2S |
 					 SND_SOC_DAIFMT_NB_NF |
 					 SND_SOC_DAIFMT_CBM_CFM);
@@ -94,7 +94,7 @@ static int omap3evt_hw_params(struct snd_pcm_substream *substream,
 		return err;
 	
 	/* Set cpu DAI configuration */
-	err = cpu_dai->ops->set_fmt(cpu_dai,
+	err = snd_soc_dai_set_fmt(cpu_dai,
 				       SND_SOC_DAIFMT_I2S  |
 				       SND_SOC_DAIFMT_NB_NF |
 				       SND_SOC_DAIFMT_CBM_CFM);
@@ -103,7 +103,7 @@ static int omap3evt_hw_params(struct snd_pcm_substream *substream,
 		return err;
 
 	/* Set the codec system clock for DAC and ADC */
-	err = codec_dai->ops->set_sysclk(codec_dai, 0, CODEC_SYSCLK_FREQ,
+	err = snd_soc_dai_set_sysclk(codec_dai, 0, CODEC_SYSCLK_FREQ,
 					    SND_SOC_CLOCK_IN);
 
 	/* Use CLKX input for mcBSP2 */
@@ -182,6 +182,91 @@ static const struct snd_soc_dapm_widget aic3111_dapm_widgets[] = {
 	SND_SOC_DAPM_LINE("Ext Spk", NULL),
 };
 
+static int omap3evt_pcm_hw_params(struct snd_pcm_substream *substream,
+				  struct snd_pcm_hw_params *params)
+{
+	struct snd_soc_pcm_runtime *rtd = substream->private_data;
+	struct snd_soc_dai *codec_dai = rtd->dai->codec_dai;
+	struct snd_soc_dai *cpu_dai = rtd->dai->cpu_dai;
+	int err;
+
+/* FIXME: here we need to switch mcbsp mode and possibly to enable
+ * whatever gpios are there to turn on bt sco microphone input */
+return 0;
+	
+	/* Set codec DAI configuration */
+	err = codec_dai->ops->set_fmt(codec_dai,
+					 SND_SOC_DAIFMT_I2S |
+					 SND_SOC_DAIFMT_NB_NF |
+					 SND_SOC_DAIFMT_CBM_CFM);
+
+	if (err < 0)
+		return err;
+	
+	/* Set cpu DAI configuration */
+	err = cpu_dai->ops->set_fmt(cpu_dai,
+				       SND_SOC_DAIFMT_I2S  |
+				       SND_SOC_DAIFMT_NB_NF |
+				       SND_SOC_DAIFMT_CBM_CFM);
+
+	if (err < 0)
+		return err;
+
+	/* Set the codec system clock for DAC and ADC */
+	err = codec_dai->ops->set_sysclk(codec_dai, 0, CODEC_SYSCLK_FREQ,
+					    SND_SOC_CLOCK_IN);
+
+	/* Use CLKX input for mcBSP2 */
+	err = snd_soc_dai_set_sysclk(cpu_dai, OMAP_MCBSP_SYSCLK_CLKX_EXT,
+			0, SND_SOC_CLOCK_IN);
+
+	return err;
+}
+
+static struct snd_soc_ops omap3evt_pcm_ops = {
+	.startup = omap3evt_startup,
+	.hw_params = omap3evt_pcm_hw_params,
+	.shutdown = omap3evt_shutdown,
+};
+
+static int omap3evt_fm_hw_params(struct snd_pcm_substream *substream,
+				  struct snd_pcm_hw_params *params)
+{
+	struct snd_soc_pcm_runtime *rtd = substream->private_data;
+	struct snd_soc_dai *codec_dai = rtd->dai->codec_dai;
+	struct snd_soc_dai *cpu_dai = rtd->dai->cpu_dai;
+	int err;
+	
+	/* Set cpu DAI configuration */
+	err = cpu_dai->ops->set_fmt(cpu_dai,
+				       SND_SOC_DAIFMT_I2S  |
+				       SND_SOC_DAIFMT_NB_NF |
+				       SND_SOC_DAIFMT_CBM_CFM);
+
+	if (err < 0)
+		return err;
+
+	/* Set the codec system clock for DAC and ADC */
+	err = codec_dai->ops->set_sysclk(codec_dai, 0, CODEC_SYSCLK_FREQ,
+					    SND_SOC_CLOCK_IN);
+
+	/* Use CLKX input for mcBSP2 */
+	err = snd_soc_dai_set_sysclk(cpu_dai, OMAP_MCBSP_SYSCLK_CLKX_EXT,
+			0, SND_SOC_CLOCK_IN);
+
+	return err;
+}
+
+
+
+static struct snd_soc_ops omap3evt_fm_ops = {
+	.startup = omap3evt_startup,
+	.hw_params = omap3evt_fm_hw_params,
+	.shutdown = omap3evt_shutdown,
+};
+
+
+
 /*
  *----------------------------------------------------------------------------
  * Function : omap3evt_dac3100_init
@@ -193,21 +278,64 @@ static int omap3evt_dac3100_init(struct snd_soc_codec *codec)
 	return 0;
 }
 
-static struct snd_soc_dai_link omap3evt_dai = {
-	.name = "TLV320DAC3100",
-	.stream_name = "DAC3100",
+
+static struct snd_soc_dai null_dai = {
+	.name = "null",
+	.playback = {
+		.stream_name = "Playback",
+		.channels_min = 1,
+		.channels_max = 4,
+		.rates = SNDRV_PCM_RATE_8000_96000,
+		.formats = SNDRV_PCM_FMTBIT_S16_LE | SNDRV_PCM_FMTBIT_S20_3LE \
+			 | SNDRV_PCM_FMTBIT_S24_3LE | SNDRV_PCM_FMTBIT_S32_LE,},
+	.capture = {
+		.stream_name = "Capture",
+		.channels_min = 1,
+		.channels_max = 4,
+		.rates = SNDRV_PCM_RATE_8000_96000,
+		.formats = SNDRV_PCM_FMTBIT_S16_LE | SNDRV_PCM_FMTBIT_S20_3LE \
+			 | SNDRV_PCM_FMTBIT_S24_3LE | SNDRV_PCM_FMTBIT_S32_LE,},
+};
+
+static struct snd_soc_dai_link omap3evt_dai[] = {
+{
+	.name = "TLV320DAC3100 SPK",
+	.stream_name = "DAC3100 SPK",
 	.codec_dai = &tlv320dac3100_dai,
 	.init = omap3evt_dac3100_init,
 	.cpu_dai = &omap_mcbsp_dai[0],
 	.ops = &omap3evt_ops,
+},
+{
+	.name = "TLV320DAC3100 IN",
+	.stream_name = "DAC3100 IN",
+	.codec_dai = &tlv320dac3100_dai,
+	.init = omap3evt_dac3100_init,
+	.cpu_dai = &omap_mcbsp_dai[1],
+	.ops = &omap3evt_ops,
+},
+{
+	.name = "TLV320DAC3100_PCM",
+	.stream_name = "DAC3100_PCM",
+	.codec_dai = &null_dai,
+	.init = omap3evt_dac3100_init,
+	.cpu_dai = &omap_mcbsp_dai[1],
+	.ops = &omap3evt_pcm_ops,
+},
+{
+	.name = "TLV320DAC3100_FM",
+	.stream_name = "DAC3100_FM",
+	.codec_dai = &null_dai,
+	.cpu_dai = &omap_mcbsp_dai[2],
+	.ops = &omap3evt_fm_ops,
+},
 };
-
 
 static struct snd_soc_card snd_soc_card_omap3evt = {
     .name = "OMAP3 EDP",
     .platform = &omap_soc_platform,
-    .dai_link = &omap3evt_dai,
-    .num_links = 1,
+    .dai_link = omap3evt_dai,
+    .num_links = ARRAY_SIZE(omap3evt_dai),
 };
 
 static struct snd_soc_device omap3evt_snd_devdata = {
@@ -229,6 +357,7 @@ static int __init omap3evt_init(void)
 	struct device *dev;
 
 	pr_debug("omap3epd-sound: Audio SoC init\n");
+	snd_soc_register_dais(&null_dai, 1);
 	omap3evt_snd_device = platform_device_alloc("soc-audio", -1);
 
 	if (!omap3evt_snd_device)
@@ -240,7 +369,9 @@ static int __init omap3evt_init(void)
 	dev = &omap3evt_snd_device->dev;
 
 	/* Set McBSP2 as audio McBSP */
-	*(unsigned int *)omap3evt_dai.cpu_dai->private_data = MCBSP2_ID; /* McBSP2 */
+	*(unsigned int *)omap3evt_dai[0].cpu_dai->private_data = MCBSP2_ID; /* McBSP2 */
+	*(unsigned int *)omap3evt_dai[1].cpu_dai->private_data = MCBSP2_ID; /* McBSP2 */
+	*(unsigned int *)omap3evt_dai[2].cpu_dai->private_data = MCBSP2_ID; /* McBSP2 */
 
 	ret = platform_device_add(omap3evt_snd_device);
 	if (ret)
