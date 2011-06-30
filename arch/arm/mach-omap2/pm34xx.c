@@ -2003,13 +2003,52 @@ static ssize_t sr_adjust_vsel_store(struct kobject *kobj,
 	return n;
 }
 
+static ssize_t vsel_control_show(struct kobject *kobj,
+        struct kobj_attribute *attr, char *buf)
+{
+    u8 num_mpu_opps = omap_pm_get_max_vdd1_opp();
+    char *tbuf = buf;
+    int i;
+
+    for (i = 1; i<= num_mpu_opps; i++)
+        if (mpu_opps[i].rate)
+            tbuf += sprintf(tbuf, "OPP%d %d\n", i, mpu_opps[i].vsel);
+    return tbuf - buf;
+}
+
+static ssize_t vsel_control_store(struct kobject *kobj,
+        struct kobj_attribute *attr, char *buf, size_t n)
+{
+    unsigned short opp;
+    unsigned short value;
+    u8 num_mpu_opps = omap_pm_get_max_vdd1_opp();
+
+    if (sscanf(buf, "%hu %hu", &opp, &value) == 2) {
+        if (opp > 0 && opp <= num_mpu_opps) {
+            if (value >= 0x10 && value <= 0x43) {
+                mpu_opps[opp].vsel = value;
+                mpu_opps[opp].sr_dynamic_vnom = value;
+                mpu_opps[opp].sr_vsr_step_vsel = 0;
+                return n;
+            }
+        }
+    }
+    return -EINVAL;
+}
+
 static struct kobj_attribute sr_adjust_vsel_attr =
 	__ATTR(sr_adjust_vsel, 0644, sr_adjust_vsel_show, sr_adjust_vsel_store);
+
+static struct kobj_attribute vsel_control_attr =
+	__ATTR(vsel_control, 0644, vsel_control_show, vsel_control_store);
 
 static int __init omap_sr_adjust_vsel_init(void)
 {
 	if (sysfs_create_file(power_kobj, &sr_adjust_vsel_attr.attr))
 		pr_warning("sr_adjust_vsel: sysfs_create_file failed\n");
+
+    if (sysfs_create_file(power_kobj, &vsel_control_attr.attr))
+        pr_warning("vsel_control: sysfs_create_file failed\n");
 	return 0;
 }
 late_initcall(omap_sr_adjust_vsel_init);
