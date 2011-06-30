@@ -49,12 +49,12 @@ static struct omap_opp omap3630_mpu_rate_table[] = {
 	{S1200M, VDD1_OPP5, 0x3E, 0x0, 0x0, 0x0},
 #elif CONFIG_ENCORE_MPU_1100MHZ
 	/*OPP4 (OPP-1G) - 1.35V*/
-	{S1000M, VDD1_OPP4, 0x3d, 0x0, 0x0, 0x0},
+	{S1000M, VDD1_OPP4, 0x3a, 0x0, 0x0, 0x0},
 	/*OPP5 (OPP-1.3G) - 1.38V*/
 	{S1100M, VDD1_OPP5, 0x3c, 0x0, 0x0, 0x0},
 #elif CONFIG_ENCORE_MPU_1200MHZ
 	/*OPP4 (OPP-1G) - 1.35V*/
-	{S1100M, VDD1_OPP4, 0x3d, 0x0, 0x0, 0x0},
+	{S1100M, VDD1_OPP4, 0x3c, 0x0, 0x0, 0x0},
 	/*OPP5 (OPP-1.3G) - 1.38V*/
 	{S1200M, VDD1_OPP5, 0x3e, 0x0, 0x0, 0x0},
 #else
