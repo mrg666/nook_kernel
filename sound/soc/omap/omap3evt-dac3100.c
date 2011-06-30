@@ -54,7 +54,7 @@
 #include "omap-mcbsp.h"
 #include "../codecs/tlv320dac3100.h"
 
-static struct wake_lock omap3edp_wakelock;
+//static struct wake_lock omap3edp_wakelock;
 static struct clk *sys_clkout2;
 static struct clk *clkout2_src_ck;
 static struct clk *sys_ck;
@@ -144,7 +144,7 @@ static int omap3evt_startup(struct snd_pcm_substream *substream)
 		omap_dpll3_errat_wa(0);
 	}
 
-	wake_lock(&omap3edp_wakelock);	
+	//wake_lock(&omap3edp_wakelock);	
 	return clk_enable(sys_clkout2);
 }
 
@@ -159,7 +159,7 @@ static void omap3evt_shutdown(struct snd_pcm_substream *substream)
 	struct snd_soc_pcm_runtime *rtd = substream->private_data;
 
 	clk_disable(sys_clkout2);
-	wake_unlock(&omap3edp_wakelock);
+	//wake_unlock(&omap3edp_wakelock);
 
 	/* remove latency constraint */
 	snd_hw_latency--;
@@ -300,7 +300,7 @@ static int __init omap3evt_init(void)
 		goto err6;
 	}
 
-	wake_lock_init(&omap3edp_wakelock, WAKE_LOCK_SUSPEND, "omap3-dac3100");
+	//wake_lock_init(&omap3edp_wakelock, WAKE_LOCK_SUSPEND, "omap3-dac3100");
 
 	dev_dbg(dev, "sys_ck = %lu\n", clk_get_rate(sys_ck));
 	dev_dbg(dev, "clkout2_src_ck = %lu\n", clk_get_rate(clkout2_src_ck));
@@ -338,7 +338,7 @@ static void __exit omap3evt_exit(void)
 
   	clk_put(gpt11_fclk);
 
-	wake_lock_destroy(&omap3edp_wakelock);
+	//wake_lock_destroy(&omap3edp_wakelock);
 
 	platform_device_unregister(omap3evt_snd_device);
 }
