@@ -52,7 +52,7 @@ static cpumask_t work_cpumask;
 static unsigned int suspended = 0;
 static unsigned int enabled = 0;
 
-static unsigned int suspendfreq = 300000;
+//static unsigned int suspendfreq = 300000; 
 
 static unsigned int samples = 0;
 
@@ -63,8 +63,8 @@ static unsigned int samples = 0;
 #define DEFAULT_MIN_SAMPLE_TIME 50000;
 static unsigned long min_sample_time;
 
-static unsigned int freq_threshold = 1800000;
-static unsigned int resume_speed = 800000;
+static unsigned int freq_threshold = 1100000;
+//static unsigned int resume_speed = 800000;
 
 static int cpufreq_governor_interactive(struct cpufreq_policy *policy,
 		unsigned int event);
@@ -219,8 +219,8 @@ static void cpufreq_interactive_freq_change_time_work(struct work_struct *work)
 		  	  target_freq = cpufreq_interactive_calc_freq(cpu);
 			  __cpufreq_driver_target(policy, target_freq, CPUFREQ_RELATION_L);
 			} else {  // special care when suspended
-			  if (target_freq > suspendfreq) {
-			     __cpufreq_driver_target(policy, suspendfreq, CPUFREQ_RELATION_H);
+			  if (target_freq > policy->min) {
+			     __cpufreq_driver_target(policy, policy->min, CPUFREQ_RELATION_H);
 			  } else {
 		  	    target_freq = cpufreq_interactive_calc_freq(cpu);
 			    if (target_freq < policy->cur) 
@@ -264,7 +264,7 @@ static void interactive_suspend(int suspend)
 {
 	unsigned int max_speed;
 
-	max_speed = resume_speed;
+	max_speed = policy->max;
 
 	if (!enabled) return;
         if (!suspend) { // resume at max speed:
@@ -273,7 +273,7 @@ static void interactive_suspend(int suspend)
                 pr_info("[imoseyon] interactive awake at %d\n", policy->cur);
         } else {
 		suspended = 1;
-                __cpufreq_driver_target(policy, suspendfreq, CPUFREQ_RELATION_H);
+                __cpufreq_driver_target(policy, policy->min, CPUFREQ_RELATION_H);
                 pr_info("[imoseyon] interactive suspended at %d\n", policy->cur);
         }
 }
