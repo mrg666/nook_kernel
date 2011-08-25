@@ -102,6 +102,21 @@ static ssize_t wait_for_fb_wake_show(struct kobject *kobj,
 	return s - buf;
 }
 
+static ssize_t fb_state_show(struct kobject *kobj,
+				     struct kobj_attribute *attr, char *buf)
+{
+    char *s = buf;
+
+    if ( fb_state == FB_STATE_DRAWING_OK ) {
+	s += sprintf(buf, "awake");
+    }
+    else {
+	s += sprintf(buf, "sleeping");
+    }
+
+    return s - buf;
+}
+
 #define power_ro_attr(_name) \
 static struct kobj_attribute _name##_attr = {	\
 	.attr	= {				\
@@ -114,10 +129,12 @@ static struct kobj_attribute _name##_attr = {	\
 
 power_ro_attr(wait_for_fb_sleep);
 power_ro_attr(wait_for_fb_wake);
+power_ro_attr(fb_state);
 
 static struct attribute *g[] = {
 	&wait_for_fb_sleep_attr.attr,
 	&wait_for_fb_wake_attr.attr,
+	&fb_state_attr.attr,
 	NULL,
 };
 

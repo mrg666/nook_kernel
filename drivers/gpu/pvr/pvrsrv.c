@@ -37,6 +37,10 @@
 
 #include "lists.h"
 
+#ifdef TI_FLUSH_ALL_CPUCACHEOP
+#include <asm/cacheflush.h>
+#endif
+
 IMG_UINT32	g_ui32InitFlags;
 
 #define		INIT_DATA_ENABLE_PDUMPINIT	0x1U
@@ -966,6 +970,13 @@ PVRSRV_ERROR IMG_CALLCONV PVRSRVGetMiscInfoKM(PVRSRV_MISC_INFO *psMiscInfo)
 				return PVRSRV_ERROR_INVALID_PARAMS;
 			}
 
+#ifdef TI_FLUSH_ALL_CPUCACHEOP
+				if(psMiscInfo->sCacheOpCtl.eCacheOpType == PVRSRV_MISC_INFO_CPUCACHEOP_FLUSH_ALL) {
+					/* printk("PVRSRV_MISC_INFO_CPUCACHEOP_FLUSH_ALL"); */
+					flush_cache_all();
+				}	
+#endif 
+
 			if(psMiscInfo->sCacheOpCtl.eCacheOpType == PVRSRV_MISC_INFO_CPUCACHEOP_FLUSH)
 			{
 				if(!OSFlushCPUCacheRangeKM(psKernelMemInfo->sMemBlk.hOSMemHandle,
@@ -983,6 +994,16 @@ PVRSRV_ERROR IMG_CALLCONV PVRSRVGetMiscInfoKM(PVRSRV_MISC_INFO *psMiscInfo)
 				{
 					return PVRSRV_ERROR_CACHEOP_FAILED;
 				}
+			}
+			else if (psMiscInfo->sCacheOpCtl.eCacheOpType ==
+						PVRSRV_MISC_INFO_CPUCACHEOP_CUSTOM_FLUSH)
+			{
+				OSFlushCPUCacheKM();
+			}
+			else if (psMiscInfo->sCacheOpCtl.eCacheOpType ==
+						PVRSRV_MISC_INFO_CPUCACHEOP_CUSTOM_INV)
+			{
+				/* nothing to do */
 			}
 		}
 	}

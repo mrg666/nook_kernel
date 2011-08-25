@@ -83,11 +83,6 @@
 #define CY_SPI_DAV			139	/* set correct gpio id */
 #define CY_SPI_BUFSIZE			512
 
-
-/* define for inclusion of TTSP App Update Load File
- * use this define if update to the TTSP Device is desired
- */
-
 /* define if force new load file for bootloader load */
 /*
 #define CY_FORCE_FW_UPDATE
@@ -414,12 +409,12 @@
 #endif /* CONFIG_MACH_OMAP3621_EVT1A */
 
 /* device mode bits */
-#define CY_OP_MODE		0x00
-#define CY_SYSINFO_MODE		0x10
-#define CY_RAW_MODE		0x40
-#define CY_SIG_MODE		0x50
-#define CY_IDAC_MODE		0x60
-#define CY_RAWBASE_MODE		0x70
+#define CY_OP_MODE          0x00
+#define CY_SYSINFO_MODE     0x10
+#define CY_RAW_MODE         0x40
+#define CY_SIG_MODE         0x50
+#define CY_IDAC_MODE        0x60
+#define CY_RAWBASE_MODE     0x70
 
 /* power mode select bits */
 #define CY_SOFT_RESET_MODE		0x01	/* return to Bootloader mode */
@@ -571,7 +566,6 @@ struct cyttsp_sysinfo_data_t {
 };
 
 /* TTSP Bootloader Register Map interface definition */
-#define CY_BL_CHKSUM_OK		0x01
 struct cyttsp_bootloader_data_t {
 	u8 bl_file;
 	u8 bl_status;
@@ -591,8 +585,26 @@ struct cyttsp_bootloader_data_t {
 	u8 cid_2;
 };
 
-#define cyttsp_wake_data_t		cyttsp_gen3_xydata_t
-#define cyttsp_test_data_t			cyttsp_gen3_testdata_t
+/* TTSP Bootloader Status and Error register bits */
+#define CYTTSP_BLSTATUS_BOOTLOADER_RUNNING       0x10
+#define CYTTSP_BLSTATUS_CHECKSUM_VALID           0x01
+#define CYTTSP_BLSTATUS_READY                    (CYTTSP_BLSTATUS_BOOTLOADER_RUNNING | CYTTSP_BLSTATUS_CHECKSUM_VALID)
+#define CYTTSP_BLSTATUS_MASK                     0x11
+
+#define CYTTSP_BLERROR_INVALID_COMMAND           0x80
+#define CYTTSP_BLERROR_INVALID_SECURITY_KEY      0x40
+#define CYTTSP_BLERROR_BOOTLOADING               0x20
+#define CYTTSP_BLERROR_COMMAND_CHECKSUM_ERROR    0x10
+#define CYTTSP_BLERROR_FLASH_PROTECTION_ERROR    0x08
+#define CYTTSP_BLERROR_FLASH_CHECKSUM_ERROR      0x04
+#define CYTTSP_BLERROR_IMAGE_VERIFICATION_ERROR  0x02
+#define CYTTSP_BLERROR_SUCCESS                   0x00
+#define CYTTSP_BLERROR_MASK                      0xFE
+
+/*********************************************************/
+
+#define cyttsp_wake_data_t      cyttsp_gen3_xydata_t
+#define cyttsp_test_data_t      cyttsp_gen3_testdata_t
 
 #ifdef CY_DECLARE_GLOBALS
 	#ifdef CY_INCLUDE_LOAD_FILE
@@ -623,17 +635,18 @@ struct cyttsp_bootloader_data_t {
                 } cyttsp_ld_blk_ray;
 
                 cyttsp_ld_blk_ray cyttsp_fw[1] = {{0}};
-                unsigned short cyttsp_fw_records = 0;
 
+                unsigned short cyttsp_fw_records = 0;
 		unsigned char cyttsp_fw_tts_verh = 0x00;
-                unsigned char cyttsp_fw_tts_verl = 0x00;
-                unsigned char cyttsp_fw_app_idh = 0x00;
-                unsigned char cyttsp_fw_app_idl = 0x00;
-                unsigned char cyttsp_fw_app_verh = 0x00;
-                unsigned char cyttsp_fw_app_verl = 0x00;
-                unsigned char cyttsp_fw_cid_0 = 0x00;
-                unsigned char cyttsp_fw_cid_1 = 0x00;
-                unsigned char cyttsp_fw_cid_2 = 0x00;
+		unsigned char cyttsp_fw_tts_verl = 0x00;
+		unsigned char cyttsp_fw_app_idh = 0x00;
+		unsigned char cyttsp_fw_app_idl = 0x00;
+		unsigned char cyttsp_fw_app_verh = 0x00;
+		unsigned char cyttsp_fw_app_verl = 0x00;
+		unsigned char cyttsp_fw_cid_0 = 0x00;
+		unsigned char cyttsp_fw_cid_1 = 0x00;
+		unsigned char cyttsp_fw_cid_2 = 0x00;
+
 		#define cyttsp_app_load()	0
 		#define cyttsp_force_fw_load()	0
 	#endif

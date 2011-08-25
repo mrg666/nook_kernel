@@ -35,6 +35,12 @@
 #include <linux/mmc/host.h>
 #include <linux/mmc/mmc.h>
 #include <linux/mmc/sd.h>
+#include <linux/mmc/mmc_log.h>
+
+#ifdef CONFIG_MMC_LOG
+#include <linux/mmc/mmc_log.h>
+#include <linux/ktime.h>
+#endif /* CONFIG_MMC_LOG */
 
 #include <asm/system.h>
 #include <asm/uaccess.h>
@@ -274,6 +280,15 @@ static int mmc_blk_issue_rq(struct mmc_queue *mq, struct request *req)
 	struct mmc_card *card = md->queue.card;
 	struct mmc_blk_request brq;
 	int ret = 1, disable_multi = 0;
+#ifdef CONFIG_MMC_LOG
+    struct timespec start_timespec;
+    struct timespec end_timespec;
+    ktime_t start_time;
+    ktime_t end_time;
+    u32     start_timestamp_ms = 0;
+    u32     temp_usecs  = 0;
+    u16     duration_ms = 0;
+#endif /* CONFIG_MMC_LOG */
 
 #ifdef CONFIG_MMC_BLOCK_DEFERRED_RESUME
 	if (mmc_bus_needs_resume(card->host)) {
@@ -346,6 +361,10 @@ static int mmc_blk_issue_rq(struct mmc_queue *mq, struct request *req)
 		brq.data.sg = mq->sg;
 		brq.data.sg_len = mmc_queue_map_sg(mq);
 
+#ifdef CONFIG_MMC_LOG
+        ktime_get_ts(&start_timespec);
+#endif /* CONFIG_MMC_LOG */
+
 		/*
 		 * Adjust the sg list so it is the same size as the
 		 * request.
@@ -370,6 +389,21 @@ static int mmc_blk_issue_rq(struct mmc_queue *mq, struct request *req)
 		mmc_wait_for_req(card->host, &brq.mrq);
 
 		mmc_queue_bounce_post(mq);
+
+#ifdef CONFIG_MMC_LOG
+        ktime_get_ts(&end_timespec);
+
+        start_time = timespec_to_ktime(start_timespec);
+        end_time   = timespec_to_ktime(end_timespec);
+
+        temp_usecs         = (u32)(ktime_to_us(start_time) & 0x00000000FFFFFFFF);
+        start_timestamp_ms = (temp_usecs / 1000);
+
+        temp_usecs  = (u32)(ktime_us_delta(end_time, start_time) & 0x00000000FFFFFFFF);
+        duration_ms = (u16)((temp_usecs / 1000) & 0x0000FFFF);
+
+        mmc_log_transaction((READ == rq_data_dir(req)) ? MMC_OP_READ : MMC_OP_WRITE, brq.cmd.arg, brq.data.blocks, start_timestamp_ms, duration_ms);
+#endif /* CONFIG_MMC_LOG */
 
 		/*
 		 * Check for errors here, but don't jump to cmd_err

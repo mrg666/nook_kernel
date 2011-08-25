@@ -763,16 +763,24 @@ static int max17042_battery_temperature(struct max17042_data* max17042)
 static int max17042_battery_rsoc(struct max17042_data* max17042)
 {
 	int err;
-	u16 soc = 0;
+	u16 soc, socrep;
 
-        err =max17042_read(MAX17042_SOCREP, &soc, max17042);	
+	soc = socrep = 0;
+
+        err =max17042_read(MAX17042_SOCREP, &socrep, max17042);
         //DEBUG("soc = 0x%04x\n", soc);
         if ( err < 0 ) 
         	dev_err(&max17042->client->dev, "read err SOCREP \n");
 	else {
-		soc >>= 8; //take upper byte
+		soc = socrep >> 8; // take upper byte (bit 8 is 1%)
+
+		// round up if xx.5% or greater (bit 7 is 0.5%)
+		if ( socrep & (1<<7) )
+		    soc++;
+
 		if(soc>100)
-	   	soc = 100;
+		    soc = 100;
+
 		max17042->rsoc_cached = soc;
 	}
 	

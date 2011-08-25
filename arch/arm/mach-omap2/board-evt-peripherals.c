@@ -39,6 +39,7 @@
 #include "mux.h"
 #include "twl4030.h"
 #include <linux/cyttsp.h>
+#include <linux/ft5x06.h>
 
 #include <linux/kxtf9.h>
 #include <linux/max17042.h>
@@ -48,13 +49,16 @@
 #define KXTF9_GPIO_FOR_PWR              34
 #define KXTF9_GPIO_FOR_IRQ              113
 
-#define CYTTSP_I2C_SLAVEADDRESS 34
-#define OMAP_CYTTSP_GPIO        99
-#define OMAP_CYTTSP_RESET_GPIO 46
-#define LCD_EN_GPIO                     36
+#define CYTTSP_I2C_SLAVEADDRESS  34
+#define OMAP_CYTTSP_GPIO         99
+#define OMAP_CYTTSP_RESET_GPIO   46
+#define LCD_EN_GPIO              36
 
-#define MAX17042_GPIO_FOR_IRQ			100
+#define FT5x06_I2C_SLAVEADDRESS  (0x70 >> 1)
+#define OMAP_FT5x06_GPIO         99
+#define OMAP_FT5x06_RESET_GPIO   46
 
+#define MAX17042_GPIO_FOR_IRQ   100
 
 extern void evt_lcd_panel_init(void);
 
@@ -67,6 +71,47 @@ int has_1GHz_support(void)
 {
 	return( (system_rev & BOARD_FEATURE_1GHz) != 0 );
 }
+
+int  ft5x06_dev_init(int resource)
+{
+    if (resource)
+    {
+        if (gpio_request(OMAP_FT5x06_RESET_GPIO, "ft5x06_reset") < 0)
+        {
+            printk(KERN_ERR "can't get ft5x06 xreset GPIO\n");
+            return -1;
+        }
+
+        if (gpio_request(OMAP_FT5x06_GPIO, "ft5x06_touch") < 0)
+        {
+            printk(KERN_ERR "can't get ft5x06 interrupt GPIO\n");
+            return -1;
+        }
+
+        gpio_direction_input(OMAP_FT5x06_GPIO);
+        omap_set_gpio_debounce(OMAP_FT5x06_GPIO, 0);
+    }
+    else
+    {
+        gpio_free(OMAP_FT5x06_GPIO);
+        gpio_free(OMAP_FT5x06_RESET_GPIO);
+    }
+
+    return 0;
+}
+
+static struct ft5x06_platform_data ft5x06_platform_data = {
+    .maxx = 600,
+    .maxy = 1024,
+    .flags = 0,
+    .reset_gpio = OMAP_FT5x06_RESET_GPIO,
+    .use_st = FT_USE_ST,
+    .use_mt = FT_USE_MT,
+    .use_trk_id = FT_USE_TRACKING_ID,
+    .use_sleep = FT_USE_SLEEP,
+    .use_gestures = 1,
+};
+
 
 int  cyttsp_dev_init(int resource)
 {
@@ -255,7 +300,7 @@ static struct platform_device evt_keys_gpio = {
 	},
 };
 
-static struct __initdata twl4030_power_data evt_t2scripts_data;
+static struct twl4030_power_data evt_t2scripts_data;
 
 static struct regulator_consumer_supply evt_vmmc1_supply = {
 	.supply		= "vmmc",
@@ -324,7 +369,7 @@ static struct platform_device *evt_board_devices[] __initdata = {
 #endif
 };
 
-static struct twl4030_hsmmc_info mmc[] __initdata = {
+static struct twl4030_hsmmc_info mmc[] = {
 	{
 		.name		= "external",
 		.mmc		= 1,
@@ -508,6 +553,11 @@ static struct i2c_board_info __initdata evt_i2c_bus2_info[] = {
 		.platform_data = &cyttsp_platform_data,
 		.irq = OMAP_GPIO_IRQ(OMAP_CYTTSP_GPIO),
 	},
+    {
+        I2C_BOARD_INFO(FT_I2C_NAME, FT5x06_I2C_SLAVEADDRESS),
+        .platform_data = &ft5x06_platform_data,
+        .irq = OMAP_GPIO_IRQ(OMAP_FT5x06_GPIO),
+    },
 	{
 		I2C_BOARD_INFO(AIC3100_NAME,  AIC3100_I2CSLAVEADDRESS),
                 .irq = OMAP_GPIO_IRQ(AUDIO_CODEC_IRQ_GPIO),

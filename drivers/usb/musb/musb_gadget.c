@@ -1602,6 +1602,8 @@ static int musb_gadget_pullup(struct usb_gadget *gadget, int is_on)
 
 	is_on = !!is_on;
 
+	DBG(2, "%s: is_on %d\n", __FUNCTION__, is_on);
+
 	/* NOTE: this assumes we are sensing vbus; we'd rather
 	 * not pullup unless the B-session is active.
 	 */

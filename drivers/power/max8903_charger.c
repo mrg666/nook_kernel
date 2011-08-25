@@ -436,7 +436,7 @@ static ssize_t set_charge(struct device *dev,
     else{   
             printk("MAX8903-TESTING: PULL LOW PIN(~CEN)!\n");
         }
-    return 0;
+    return count;
 }
 
 /*no need to read entry, write only for controlling the charging circuit*/
