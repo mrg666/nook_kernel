@@ -42,6 +42,16 @@
  */
 #define ISPDSS_RSZ_EXPAND_720p	16
 
+static struct isp_interface_config rsz_interface = {
+       .ccdc_par_ser           = ISP_NONE,
+       .dataline_shift         = 0,
+       .hsvs_syncdetect        = ISPCTRL_SYNC_DETECT_VSRISE,
+       .strobe                 = 0,
+       .prestrobe              = 0,
+       .shutter                = 0,
+       .wait_hs_vs             = 0,
+};
+
 enum config_done {
 	STATE_CONFIGURED,		/* Resizer driver configured */
 	STATE_NOT_CONFIGURED	/* Resizer driver not configured */
@@ -283,6 +293,11 @@ int ispdss_begin(struct isp_node *pipe, u32 input_buffer_index,
 	if (ispresizer_set_outaddr(isp_res,
 		(u32)dev_ctx.out_buf_virt_addr[output_buffer_index]) != 0)
 		return -EINVAL;
+
+       if (isp_configure_interface(dev_ctx.isp, &rsz_interface) != 0) {
+               dev_err(dev_ctx.isp, "Can not configure interface\n");
+               return -EINVAL;
+       }
 
 	/* Set ISP callback for the resizing complete even */
 	if (isp_set_callback(dev_ctx.isp, CBK_RESZ_DONE, ispdss_isr,

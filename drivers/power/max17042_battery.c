@@ -2,7 +2,6 @@
  * linux/drivers/power/max17042.c
  *
  * Copyright (C) 2010 Barnes & Noble, Inc.
- * Intrinsyc Software International, Inc. on behalf of Barnes & Noble, Inc.
  *
  * Max17042 Gas Gauge driver for Linux
  *
@@ -1518,7 +1517,6 @@ static void __exit max17042_exit(void)
 module_init(max17042_init);
 module_exit(max17042_exit);
 
-MODULE_AUTHOR("Intrinsyc Software Inc., <support@intrinsyc.com>");
 MODULE_DESCRIPTION("MAX17042 Battery Gas Gauge");
 MODULE_LICENSE("GPL");
 

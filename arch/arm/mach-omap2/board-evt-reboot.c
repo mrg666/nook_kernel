@@ -1,9 +1,8 @@
 /*
  * Encore machine emergency restart routine called on kernel panic.
  *
- * Copyright (C) 2011 Barnes & Noble 
+ * Copyright (C) 2011 Barnes & Noble, Inc
  *
- * Written by David Bolcsfoldi <dbolcsfoldi@intrinsyc.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 as

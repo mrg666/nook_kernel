@@ -1,7 +1,7 @@
 /*
  * Encore Modem Manager library
  *
- * Copyright (C) 2010 Intrinsyc Software Inc.
+ * Copyright (C) 2010 Barnes & Noble, Inc.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -788,7 +788,6 @@ module_exit(encore_modem_mgr_cleanup);
  * Final Administrivia
  *****************************************************************************/
 
-MODULE_AUTHOR("Intrinsyc Software Inc., <support@intrinsyc.com>");
 MODULE_DESCRIPTION("Encore Modem Manager");
 MODULE_LICENSE("GPL");
 

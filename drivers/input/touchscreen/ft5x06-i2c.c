@@ -347,12 +347,12 @@ void ft5x06_xy_worker(struct work_struct *work)
 
             if (rev_x)
             {
-                g_xy_data.x2 = INVERT_X(g_xy_data.x2, ts->platform_data->maxx);
+                g_xy_data.x2 = INVERT_X(g_xy_data.x2, ts->platform_data->maxx-1);
             }
 
             if (rev_y)
             {
-                g_xy_data.y2 = INVERT_X(g_xy_data.y2, ts->platform_data->maxy);
+                g_xy_data.y2 = INVERT_Y(g_xy_data.y2, ts->platform_data->maxy-1);
             }
 
             id = id_2;
@@ -407,12 +407,12 @@ void ft5x06_xy_worker(struct work_struct *work)
 
             if (rev_x)
             {
-                g_xy_data.x1 = INVERT_X(g_xy_data.x1, ts->platform_data->maxx);
+                g_xy_data.x1 = INVERT_X(g_xy_data.x1, ts->platform_data->maxx-1);
             }
 
             if (rev_y)
             {
-                g_xy_data.y1 = INVERT_X(g_xy_data.y1, ts->platform_data->maxy);
+                g_xy_data.y1 = INVERT_Y(g_xy_data.y1, ts->platform_data->maxy-1);
             }
 
             id = id_1;
@@ -615,10 +615,8 @@ void ft5x06_xy_worker(struct work_struct *work)
             }
             else
             {
-                gest_count = 0;
+               gest_count = 0;
             }
-
-            input_report_key(ts->input, BTN_3, FT_TCH);
 
             input_report_abs(ts->input, ABS_HAT1X, g_xy_data.gest_id);
             input_report_abs(ts->input, ABS_HAT2X, tch_data.status);
@@ -2305,7 +2303,7 @@ static ssize_t ft5x06_wmval_store(struct device *dev, struct device_attribute *a
 
     mutex_lock(&ts->device_mode_mutex);
 
-    retval = strict_strtoul(buf, 16, &wmval);    
+    retval = strict_strtoul(buf, 16, &wmval);
     if (0 != retval)
     {
         dev_err(dev, "%s() - ERROR: Could not convert the given input to a number. The given input was: \"%s\"\n", __FUNCTION__, buf);
@@ -2437,10 +2435,6 @@ static int ft5x06_resume(struct i2c_client * client)
 
     ft5x06_reset_panel_via_gpio(ts);
 
-    /* Make sure ft5x06_xy_worker() is allowed to re-enable the interrupt the next time it is called. */
-    ts->allow_enable_irq = true;
-    mb();
-
     dev_dbg(&ts->client->dev, "%s() - Re-enabling Touch Panel interrupts.\n", __FUNCTION__);
     enable_irq(ts->client->irq);
 
@@ -2458,17 +2452,12 @@ static int ft5x06_suspend(struct i2c_client * client, pm_message_t message)
 
     dev_info(&client->dev, "%s() - Driver is suspending.\n", __FUNCTION__);
 
-    /* If ft5x06_xy_worker() is currently processing an interrupt, we
-     * don't want it to enable interrupts when its processing has finished.
-     */
-    ts->allow_enable_irq = false;
-    mb();
-
-    /* Wait for any unprocessed interrupts to be processed. */
-    flush_workqueue(ft5x06_ts_wq);
-
     dev_dbg(&ts->client->dev, "%s() - Disabling Touch Panel interrupts...\n", __FUNCTION__);
+    /* Disable/enable irq call (in irq/worker function) are matched, disable here for suspend */
     disable_irq(ts->client->irq);
+
+    /* Wait for worker finish, even if worker enables irq, the irq still is disabled because of the above call */
+    flush_workqueue(ft5x06_ts_wq);
 
     retval = regulator_disable(ts->reg);
     if (0 > retval)
@@ -2554,11 +2543,6 @@ static int ft5x06_initialize(struct i2c_client *client, struct ft5x06 *ts)
 
     set_bit(BTN_TOUCH, input_device->keybit);
     set_bit(BTN_2,     input_device->keybit);
-
-    if (ts->platform_data->use_gestures)
-    {
-        set_bit(BTN_3, input_device->keybit);
-    }
 
     input_set_abs_params(input_device, ABS_X,          0, ts->platform_data->maxx, 0, 0);
     input_set_abs_params(input_device, ABS_Y,          0, ts->platform_data->maxy, 0, 0);

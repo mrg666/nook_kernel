@@ -28,6 +28,8 @@
 #include <linux/irq.h>
 #include <linux/gpio.h>
 #include <linux/interrupt.h>
+#include <linux/slab.h>
+#include <linux/earlysuspend.h>
 
 //#define KXTF9_DEBUG
 
@@ -109,7 +111,19 @@ struct kxtf9_data {
 	u8 resume[RESUME_ENTRIES];
 	int res_interval;
 	int irq;
+#ifdef CONFIG_HAS_EARLYSUSPEND
+	struct early_suspend early_suspend;
+	atomic_t suspended;
+#endif
 };
+
+#ifdef CONFIG_HAS_EARLYSUSPEND
+static void kxtf9_late_resume(struct early_suspend *handler);
+static void kxtf9_early_suspend(struct early_suspend *handler);
+#else
+static void kxtf9_late_resume(struct early_suspend *handler) {}
+static void kxtf9_early_suspend(struct early_suspend *handler) {}
+#endif
 
 static int kxtf9_i2c_read(struct kxtf9_data *tf9, u8 addr, u8 *data, int len)
 {
@@ -571,7 +585,7 @@ static int kxtf9_enable(struct kxtf9_data *tf9)
 
 	aprintk("kxtf9: kxtf9_enable ...\n");
 
-	if (!atomic_cmpxchg(&tf9->enabled, 0, 1)) {
+	if (!atomic_read(&tf9->suspended) && !atomic_cmpxchg(&tf9->enabled, 0, 1)) {
 		err = kxtf9_device_power_on(tf9);
 		err = kxtf9_i2c_read(tf9, INT_REL, &buf, 1);
 		if (err < 0) {
@@ -1016,6 +1030,14 @@ static int __devinit kxtf9_probe(struct i2c_client *client,
 	}
 	disable_irq_nosync(tf9->irq);
 
+#ifdef CONFIG_HAS_EARLYSUSPEND
+	tf9->early_suspend.level = EARLY_SUSPEND_LEVEL_BLANK_SCREEN + 1;
+	tf9->early_suspend.suspend = kxtf9_early_suspend;
+	tf9->early_suspend.resume = kxtf9_late_resume;
+
+	register_early_suspend(&tf9->early_suspend);
+#endif
+
 	mutex_unlock(&tf9->lock);
 
 	return 0;
@@ -1047,6 +1069,11 @@ static int __devexit kxtf9_remove(struct i2c_client *client)
 	kxtf9_device_power_off(tf9);
 	if (tf9->pdata->exit)
 		tf9->pdata->exit();
+
+#ifdef CONFIG_HAS_EARLYSUSPEND
+	unregister_early_suspend(&tf9->early_suspend);
+#endif
+
 	kfree(tf9->pdata);
 	sysfs_remove_group(&client->dev.kobj, &kxtf9_attribute_group);
 	kfree(tf9);
@@ -1058,15 +1085,29 @@ static int __devexit kxtf9_remove(struct i2c_client *client)
 static int kxtf9_resume(struct i2c_client *client)
 {
 	struct kxtf9_data *tf9 = i2c_get_clientdata(client);
-
+	atomic_set(&tf9->suspended, 0);
 	return kxtf9_enable(tf9);
 }
 
 static int kxtf9_suspend(struct i2c_client *client, pm_message_t mesg)
 {
 	struct kxtf9_data *tf9 = i2c_get_clientdata(client);
-
+	atomic_set(&tf9->suspended, 1);
 	return kxtf9_disable(tf9);
+}
+#endif
+
+#ifdef CONFIG_HAS_EARLYSUSPEND
+static void kxtf9_late_resume(struct early_suspend *handler)
+{
+	struct kxtf9_data *tf9 = container_of(handler, struct kxtf9_data, early_suspend);
+	kxtf9_resume(tf9->client);
+}
+
+static void kxtf9_early_suspend(struct early_suspend *handler)
+{
+	struct kxtf9_data *tf9 = container_of(handler, struct kxtf9_data, early_suspend);
+	kxtf9_suspend(tf9->client, PMSG_SUSPEND);
 }
 #endif
 
@@ -1083,7 +1124,9 @@ static struct i2c_driver kxtf9_driver = {
 		   },
 	.probe = kxtf9_probe,
 	.remove = __devexit_p(kxtf9_remove),
+#ifndef CONFIG_HAS_EARLYSUSPEND
 	.resume = kxtf9_resume,
+#endif
 	.suspend = kxtf9_suspend,
 	.id_table = kxtf9_id,
 };

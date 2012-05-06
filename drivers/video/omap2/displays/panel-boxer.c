@@ -5,7 +5,6 @@
  * Author: Tomi Valkeinen <tomi.valkeinen@nokia.com>
  *
  * Copyright (c) 2010 Barnes & Noble
- * David Bolcsfoldi <dbolcsfoldi@intrinsyc.com>
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 as published by
@@ -49,7 +48,7 @@
 #define LCD_PIXCLOCK_MAX	52000 /* Maximum is 52MHz */
 
 /* Current Pixel clock */
-#define LCD_PIXEL_CLOCK		68000
+#define LCD_PIXEL_CLOCK		48000
 
 static struct workqueue_struct *boxer_panel_wq;
 static struct omap_dss_device *boxer_panel_dssdev;
@@ -89,11 +88,7 @@ static int boxer_panel_probe(struct omap_dss_device *dssdev)
 			       OMAP_DSS_LCD_IHS | OMAP_DSS_LCD_IPC;
 	dssdev->panel.timings = boxer_panel_timings;
 	dssdev->get_resolution = boxer_get_resolution;
-#ifdef CONFIG_FB_OMAP2_32_BPP
 	dssdev->panel.recommended_bpp = 24;
-#else
-    dssdev->panel.recommended_bpp = 16;
-#endif
 	return 0;
 }
 
