@@ -190,9 +190,6 @@ static int kxtf9_verify(struct kxtf9_data *tf9)
 	aprintk("kxtf9: kxtf9_verify ...\n");
 
 	err = kxtf9_i2c_read(tf9, WHO_AM_I, &buf, 1);
-	/*** DEBUG OUTPUT - REMOVE ***/
-	dev_info(&tf9->client->dev, "WHO_AM_I = 0x%02x\n", buf);
-	/*** <end> DEBUG OUTPUT - REMOVE ***/
 	if (err < 0)
 		dev_err(&tf9->client->dev, "read err int source\n");
 	if (buf != 1)
@@ -404,29 +401,13 @@ static void kxtf9_irq_work_func(struct work_struct *work)
 			dev_err(&tf9->client->dev, "read err tilt dir\n");
 		int_status |= kxtf9_resolve_dir(tf9, buf[0]);
 		int_status |= kxtf9_resolve_dir(tf9, buf[1]) << 8;
-		/*** DEBUG OUTPUT - REMOVE ***/
-		dev_info(&tf9->client->dev, "IRQ TILT [%x]\n",
-						kxtf9_resolve_dir(tf9, buf[0]));
-		/*** <end> DEBUG OUTPUT - REMOVE ***/
 	}
 	if (((status & TDTS0) | (status & TDTS1)) > 0) {
 		err = kxtf9_i2c_read(tf9, INT_SRC_REG1, buf, 1);
 		if (err < 0)
 			dev_err(&tf9->client->dev, "read err tap dir\n");
 		int_status |= (kxtf9_resolve_dir(tf9, buf[0])) << 16;
-		/*** DEBUG OUTPUT - REMOVE ***/
-		dev_info(&tf9->client->dev, "IRQ TAP%d [%x]\n",
-		((status & TDTS1) ? (2) : (1)), kxtf9_resolve_dir(tf9, buf[0]));
-		/*** <end> DEBUG OUTPUT - REMOVE ***/
 	}
-	/*** DEBUG OUTPUT - REMOVE ***/
-	if ((status & 0x02) > 0) {
-		if (((status & TDTS0) | (status & TDTS1)) > 0)
-			dev_info(&tf9->client->dev, "IRQ WUF + TAP\n");
-		else
-			dev_info(&tf9->client->dev, "IRQ WUF\n");
-	}
-	/*** <end> DEBUG OUTPUT - REMOVE ***/
 	if (int_status & 0x2FFF) {
 		input_report_rel(tf9->input_dev, REL_MISC, int_status);
 		input_sync(tf9->input_dev);
@@ -559,10 +540,6 @@ static int kxtf9_get_acceleration_data(struct kxtf9_data *tf9, int *xyz)
 		  : (hw_d[tf9->pdata->axis_map_y]));
 	xyz[2] = ((tf9->pdata->negate_z) ? (-hw_d[tf9->pdata->axis_map_z])
 		  : (hw_d[tf9->pdata->axis_map_z]));
-
-	/*** DEBUG OUTPUT - REMOVE ***/
-//	dev_info(&tf9->client->dev, "x:%d y:%d z:%d\n", xyz[0], xyz[1], xyz[2]);
-	/*** <end> DEBUG OUTPUT - REMOVE ***/
 
 	return err;
 }
