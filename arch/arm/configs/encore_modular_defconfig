@@ -1,7 +1,7 @@
 #
 # Automatically generated make config: don't edit
 # Linux kernel version: 2.6.32.9
-# Tue Dec  6 13:30:05 2011
+# Thu May 10 17:27:39 2012
 #
 CONFIG_ARM=y
 CONFIG_SYS_SUPPORTS_APM_EMULATION=y
@@ -364,6 +364,7 @@ CONFIG_HAVE_MLOCKED_PAGE_BIT=y
 CONFIG_DEFAULT_MMAP_MIN_ADDR=4096
 # CONFIG_LEDS is not set
 CONFIG_ALIGNMENT_TRAP=y
+CONFIG_ALLOW_CPU_ALIGNMENT=y
 # CONFIG_UACCESS_WITH_MEMCPY is not set
 
 #
