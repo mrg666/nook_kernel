@@ -733,7 +733,6 @@ void cyttsp_xy_worker(struct work_struct *work)
 			g_xy_data.y3 =
 				INVERT_X(g_xy_data.y3, ts->platform_data->maxy);
 		}
-
 		id = GET_TOUCH3_ID(g_xy_data.touch34_id);
 		if (ts->platform_data->use_trk_id) {
 			cur_mt_pos[CY_MT_TCH3_IDX][CY_XPOS] =
@@ -781,7 +780,6 @@ void cyttsp_xy_worker(struct work_struct *work)
 			g_xy_data.y2 =
 				INVERT_X(g_xy_data.y2, ts->platform_data->maxy);
 		}
-
 		id = GET_TOUCH2_ID(g_xy_data.touch12_id);
 		if (ts->platform_data->use_trk_id) {
 			cur_mt_pos[CY_MT_TCH2_IDX][CY_XPOS] =
