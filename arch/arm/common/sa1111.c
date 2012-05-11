@@ -887,8 +887,6 @@ static int sa1111_resume(struct platform_device *dev)
 	if (!save)
 		return 0;
 
-	spin_lock_irqsave(&sachip->lock, flags);
-
 	/*
 	 * Ensure that the SA1111 is still here.
 	 * FIXME: shouldn't do this here.
@@ -909,6 +907,13 @@ static int sa1111_resume(struct platform_device *dev)
 	sa1111_writel(0, sachip->base + SA1111_INTC + SA1111_INTEN1);
 
 	base = sachip->base;
+
+	/*
+	 * Only lock for write ops. Also, sa1111_wake must be called with
+	 * released spinlock!
+	 */
+	spin_lock_irqsave(&sachip->lock, flags);
+
 	sa1111_writel(save->skcr,     base + SA1111_SKCR);
 	sa1111_writel(save->skpcr,    base + SA1111_SKPCR);
 	sa1111_writel(save->skcdr,    base + SA1111_SKCDR);
