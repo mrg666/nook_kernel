@@ -190,5 +190,7 @@ ENDPROC(_find_next_bit_be)
 		addeq	r2, r2, #1
 		mov	r0, r2
 #endif
+                cmp     r1, r0      @ Clamp to maxbit
+                movlo   r0, r1
 		mov	pc, lr
 
