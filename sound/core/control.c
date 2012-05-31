@@ -31,6 +31,7 @@
 
 /* max number of user-defined controls */
 #define MAX_USER_CONTROLS	32
+#define MAX_CONTROL_COUNT	1028
 
 struct snd_kctl_ioctl {
 	struct list_head list;		/* list of all ioctls */
@@ -190,6 +191,10 @@ static struct snd_kcontrol *snd_ctl_new(struct snd_kcontrol *control,
 	
 	if (snd_BUG_ON(!control || !control->count))
 		return NULL;
+
+	if (control->count > MAX_CONTROL_COUNT)
+		return NULL;
+
 	kctl = kzalloc(sizeof(*kctl) + sizeof(struct snd_kcontrol_volatile) * control->count, GFP_KERNEL);
 	if (kctl == NULL) {
 		snd_printk(KERN_ERR "Cannot allocate control instance\n");
@@ -1091,18 +1096,12 @@ static int snd_ctl_tlv_ioctl(struct snd_ctl_file *file,
                              struct snd_ctl_tlv __user *_tlv,
                              int op_flag)
 {
-	struct snd_card *card;
+	struct snd_card *card = file->card;
 	struct snd_ctl_tlv tlv;
 	struct snd_kcontrol *kctl;
 	struct snd_kcontrol_volatile *vd;
 	unsigned int len;
 	int err = 0;
-
-	if (!file) {
-		WARN_ON(1);
-		return -EINVAL;
-	}
-	card = file->card;
 
 	if (copy_from_user(&tlv, _tlv, sizeof(tlv)))
 		return -EFAULT;
