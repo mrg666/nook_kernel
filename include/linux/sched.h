@@ -521,12 +521,16 @@ struct task_cputime {
 #define virt_exp	utime
 #define sched_exp	sum_exec_runtime
 
+#ifdef __SPLINT__
+#define INIT_CPUTIME	NULL
+#else
 #define INIT_CPUTIME	\
 	(struct task_cputime) {					\
 		.utime = cputime_zero,				\
 		.stime = cputime_zero,				\
 		.sum_exec_runtime = 0,				\
 	}
+#endif
 
 /*
  * Disable preemption until the scheduler is running.
@@ -622,7 +626,7 @@ struct signal_struct {
 	struct tty_struct *tty; /* NULL if no tty */
 
 #ifdef CONFIG_SCHED_AUTOGROUP
-    struct autogroup *autogroup;
+	struct autogroup *autogroup;
 #endif
 
 	/*
@@ -634,6 +638,10 @@ struct signal_struct {
 	cputime_t utime, stime, cutime, cstime;
 	cputime_t gtime;
 	cputime_t cgtime;
+#ifndef CONFIG_VIRT_CPU_ACCOUNTING
+	cputime_t prev_utime, prev_stime;
+#endif
+
 	unsigned long nvcsw, nivcsw, cnvcsw, cnivcsw;
 	unsigned long min_flt, maj_flt, cmin_flt, cmaj_flt;
 	unsigned long inblock, oublock, cinblock, coublock;
@@ -1729,6 +1737,7 @@ static inline void put_task_struct(struct task_struct *t)
 extern cputime_t task_utime(struct task_struct *p);
 extern cputime_t task_stime(struct task_struct *p);
 extern cputime_t task_gtime(struct task_struct *p);
+extern void thread_group_times(struct task_struct *p, cputime_t *ut, cputime_t *st);
 
 extern int task_free_register(struct notifier_block *n);
 extern int task_free_unregister(struct notifier_block *n);
@@ -2631,3 +2640,4 @@ static inline unsigned long rlimit_max(unsigned int limit)
 #endif /* __KERNEL__ */
 
 #endif
+
