@@ -1,3 +1,6 @@
+#ifdef CONFIG_SCHED_BFS
+#include "sched_bfs.c"
+#else
 /*
  *  kernel/sched.c
  *
@@ -11029,3 +11032,4 @@ EXPORT_SYMBOL_GPL(synchronize_sched_expedited);
 EXPORT_SYMBOL_GPL(nr_running);
 
 #endif /* #else #ifndef CONFIG_SMP */
+#endif /* CONFIG_SCHED_BFS */

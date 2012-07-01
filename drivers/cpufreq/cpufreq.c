@@ -28,6 +28,8 @@
 #include <linux/cpu.h>
 #include <linux/completion.h>
 #include <linux/mutex.h>
+#include <linux/sched.h>
+#include <linux/debugfs.h>
 
 #define dprintk(msg...) cpufreq_debug_printk(CPUFREQ_DEBUG_CORE, \
 						"cpufreq-core", msg)
@@ -647,35 +649,6 @@ static ssize_t show_scaling_setspeed(struct cpufreq_policy *policy, char *buf)
 	return policy->governor->show_setspeed(policy, buf);
 }
 
-static ssize_t show_boost_cpufreq(struct cpufreq_policy *policy, char *buf)
-{
-	if (!policy->governor || !policy->governor->boost_cpu_freq)
-		return sprintf(buf, "<unsupported>\n");
-
-	return sprintf(buf, "%d\n", 0);
-}
-
-static ssize_t store_boost_cpufreq(struct cpufreq_policy *policy,
-					const char *buf, size_t count)
-{
-	unsigned int boost = 0;
-	unsigned int ret;
-
-	if (!policy->governor)
-		return -EINVAL;
-
-	ret = sscanf(buf, "%u", &boost);
-	if (ret != 1)
-		return -EINVAL;
-
-	/* call policy-gov-boost functionality */
-	policy->governor->boost_cpu_freq(policy);
-
-	return count;
-
-}
-
-
 #define define_one_ro(_name) \
 static struct freq_attr _name = \
 __ATTR(_name, 0444, show_##_name, NULL)
@@ -701,7 +674,6 @@ define_one_rw(scaling_min_freq);
 define_one_rw(scaling_max_freq);
 define_one_rw(scaling_governor);
 define_one_rw(scaling_setspeed);
-define_one_rw(boost_cpufreq);
 
 static struct attribute *default_attrs[] = {
 	&cpuinfo_min_freq.attr,
@@ -715,7 +687,6 @@ static struct attribute *default_attrs[] = {
 	&scaling_driver.attr,
 	&scaling_available_governors.attr,
 	&scaling_setspeed.attr,
-        &boost_cpufreq.attr,
 	NULL
 };
 
@@ -1536,7 +1507,12 @@ int __cpufreq_driver_target(struct cpufreq_policy *policy,
 		target_freq, relation);
 	if (cpu_online(policy->cpu) && cpufreq_driver->target)
 		retval = cpufreq_driver->target(policy, target_freq, relation);
-
+	if (likely(retval != -EINVAL)) {
+		if (target_freq == policy->max)
+			cpu_nonscaling(policy->cpu);
+		else
+			cpu_scaling(policy->cpu);
+	}
 	return retval;
 }
 EXPORT_SYMBOL_GPL(__cpufreq_driver_target);
@@ -2017,6 +1993,9 @@ static int __init cpufreq_core_init(void)
 						&cpu_sysdev_class.kset.kobj);
 	BUG_ON(!cpufreq_global_kobject);
 
+#ifdef CONFIG_CPU_FREQ_DEBUG
+	debugfs_create_u32("cpufreq_debug", 0600, NULL, &debug);
+#endif
 	return 0;
 }
 core_initcall(cpufreq_core_init);
