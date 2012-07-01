@@ -16,4 +16,3 @@ struct rcu_head {
 #endif
 
 #endif
-
