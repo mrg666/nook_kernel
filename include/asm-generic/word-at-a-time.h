@@ -6,7 +6,7 @@
   <head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# githubog: http://ogp.me/ns/fb/githubog#">
     <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>android_kernel_thunderc/lib/strncpy_from_user.c at f32a5c494065773ba2071859b26beec52f3852b7 · mrg666/android_kernel_thunderc</title>
+        <title>android_kernel_thunderc/include/asm-generic/word-at-a-time.h at f32a5c494065773ba2071859b26beec52f3852b7 · mrg666/android_kernel_thunderc</title>
     <link rel="search" type="application/opensearchdescription+xml" href="/opensearch.xml" title="GitHub" />
     <link rel="fluid-icon" href="https://github.com/fluidicon.png" title="GitHub" />
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
@@ -33,7 +33,7 @@
     
     
 
-      <link rel='permalink' href='/mrg666/android_kernel_thunderc/blob/f32a5c494065773ba2071859b26beec52f3852b7/lib/strncpy_from_user.c'>
+      <link rel='permalink' href='/mrg666/android_kernel_thunderc/blob/f32a5c494065773ba2071859b26beec52f3852b7/include/asm-generic/word-at-a-time.h'>
     <meta property="og:title" content="android_kernel_thunderc"/>
     <meta property="og:type" content="githubog:gitrepository"/>
     <meta property="og:url" content="https://github.com/mrg666/android_kernel_thunderc"/>
@@ -270,79 +270,79 @@
                 <div class="commitish-item branch-commitish selector-item js-navigation-item js-navigation-target ">
                   <span class="mini-icon mini-icon-confirm"></span>
                   <h4>
-                      <a href="/mrg666/android_kernel_thunderc/blob/LS670/lib/strncpy_from_user.c" class="js-navigation-open" data-name="LS670" rel="nofollow">LS670</a>
+                      <a href="/mrg666/android_kernel_thunderc/blob/LS670/include/asm-generic/word-at-a-time.h" class="js-navigation-open" data-name="LS670" rel="nofollow">LS670</a>
                   </h4>
                 </div>
                 <div class="commitish-item branch-commitish selector-item js-navigation-item js-navigation-target ">
                   <span class="mini-icon mini-icon-confirm"></span>
                   <h4>
-                      <a href="/mrg666/android_kernel_thunderc/blob/LS670-GB/lib/strncpy_from_user.c" class="js-navigation-open" data-name="LS670-GB" rel="nofollow">LS670-GB</a>
+                      <a href="/mrg666/android_kernel_thunderc/blob/LS670-GB/include/asm-generic/word-at-a-time.h" class="js-navigation-open" data-name="LS670-GB" rel="nofollow">LS670-GB</a>
                   </h4>
                 </div>
                 <div class="commitish-item branch-commitish selector-item js-navigation-item js-navigation-target ">
                   <span class="mini-icon mini-icon-confirm"></span>
                   <h4>
-                      <a href="/mrg666/android_kernel_thunderc/blob/LW690/lib/strncpy_from_user.c" class="js-navigation-open" data-name="LW690" rel="nofollow">LW690</a>
+                      <a href="/mrg666/android_kernel_thunderc/blob/LW690/include/asm-generic/word-at-a-time.h" class="js-navigation-open" data-name="LW690" rel="nofollow">LW690</a>
                   </h4>
                 </div>
                 <div class="commitish-item branch-commitish selector-item js-navigation-item js-navigation-target ">
                   <span class="mini-icon mini-icon-confirm"></span>
                   <h4>
-                      <a href="/mrg666/android_kernel_thunderc/blob/MS690/lib/strncpy_from_user.c" class="js-navigation-open" data-name="MS690" rel="nofollow">MS690</a>
+                      <a href="/mrg666/android_kernel_thunderc/blob/MS690/include/asm-generic/word-at-a-time.h" class="js-navigation-open" data-name="MS690" rel="nofollow">MS690</a>
                   </h4>
                 </div>
                 <div class="commitish-item branch-commitish selector-item js-navigation-item js-navigation-target ">
                   <span class="mini-icon mini-icon-confirm"></span>
                   <h4>
-                      <a href="/mrg666/android_kernel_thunderc/blob/MS690-Dif/lib/strncpy_from_user.c" class="js-navigation-open" data-name="MS690-Dif" rel="nofollow">MS690-Dif</a>
+                      <a href="/mrg666/android_kernel_thunderc/blob/MS690-Dif/include/asm-generic/word-at-a-time.h" class="js-navigation-open" data-name="MS690-Dif" rel="nofollow">MS690-Dif</a>
                   </h4>
                 </div>
                 <div class="commitish-item branch-commitish selector-item js-navigation-item js-navigation-target ">
                   <span class="mini-icon mini-icon-confirm"></span>
                   <h4>
-                      <a href="/mrg666/android_kernel_thunderc/blob/patch-1/lib/strncpy_from_user.c" class="js-navigation-open" data-name="patch-1" rel="nofollow">patch-1</a>
+                      <a href="/mrg666/android_kernel_thunderc/blob/patch-1/include/asm-generic/word-at-a-time.h" class="js-navigation-open" data-name="patch-1" rel="nofollow">patch-1</a>
                   </h4>
                 </div>
                 <div class="commitish-item branch-commitish selector-item js-navigation-item js-navigation-target ">
                   <span class="mini-icon mini-icon-confirm"></span>
                   <h4>
-                      <a href="/mrg666/android_kernel_thunderc/blob/US670/lib/strncpy_from_user.c" class="js-navigation-open" data-name="US670" rel="nofollow">US670</a>
+                      <a href="/mrg666/android_kernel_thunderc/blob/US670/include/asm-generic/word-at-a-time.h" class="js-navigation-open" data-name="US670" rel="nofollow">US670</a>
                   </h4>
                 </div>
                 <div class="commitish-item branch-commitish selector-item js-navigation-item js-navigation-target ">
                   <span class="mini-icon mini-icon-confirm"></span>
                   <h4>
-                      <a href="/mrg666/android_kernel_thunderc/blob/VM670/lib/strncpy_from_user.c" class="js-navigation-open" data-name="VM670" rel="nofollow">VM670</a>
+                      <a href="/mrg666/android_kernel_thunderc/blob/VM670/include/asm-generic/word-at-a-time.h" class="js-navigation-open" data-name="VM670" rel="nofollow">VM670</a>
                   </h4>
                 </div>
                 <div class="commitish-item branch-commitish selector-item js-navigation-item js-navigation-target ">
                   <span class="mini-icon mini-icon-confirm"></span>
                   <h4>
-                      <a href="/mrg666/android_kernel_thunderc/blob/VM670-ICS/lib/strncpy_from_user.c" class="js-navigation-open" data-name="VM670-ICS" rel="nofollow">VM670-ICS</a>
+                      <a href="/mrg666/android_kernel_thunderc/blob/VM670-ICS/include/asm-generic/word-at-a-time.h" class="js-navigation-open" data-name="VM670-ICS" rel="nofollow">VM670-ICS</a>
                   </h4>
                 </div>
                 <div class="commitish-item branch-commitish selector-item js-navigation-item js-navigation-target ">
                   <span class="mini-icon mini-icon-confirm"></span>
                   <h4>
-                      <a href="/mrg666/android_kernel_thunderc/blob/VM670-IHO/lib/strncpy_from_user.c" class="js-navigation-open" data-name="VM670-IHO" rel="nofollow">VM670-IHO</a>
+                      <a href="/mrg666/android_kernel_thunderc/blob/VM670-IHO/include/asm-generic/word-at-a-time.h" class="js-navigation-open" data-name="VM670-IHO" rel="nofollow">VM670-IHO</a>
                   </h4>
                 </div>
                 <div class="commitish-item branch-commitish selector-item js-navigation-item js-navigation-target ">
                   <span class="mini-icon mini-icon-confirm"></span>
                   <h4>
-                      <a href="/mrg666/android_kernel_thunderc/blob/VM670-IHO-r1/lib/strncpy_from_user.c" class="js-navigation-open" data-name="VM670-IHO-r1" rel="nofollow">VM670-IHO-r1</a>
+                      <a href="/mrg666/android_kernel_thunderc/blob/VM670-IHO-r1/include/asm-generic/word-at-a-time.h" class="js-navigation-open" data-name="VM670-IHO-r1" rel="nofollow">VM670-IHO-r1</a>
                   </h4>
                 </div>
                 <div class="commitish-item branch-commitish selector-item js-navigation-item js-navigation-target ">
                   <span class="mini-icon mini-icon-confirm"></span>
                   <h4>
-                      <a href="/mrg666/android_kernel_thunderc/blob/VM670-IHO-TINYRCU/lib/strncpy_from_user.c" class="js-navigation-open" data-name="VM670-IHO-TINYRCU" rel="nofollow">VM670-IHO-TINYRCU</a>
+                      <a href="/mrg666/android_kernel_thunderc/blob/VM670-IHO-TINYRCU/include/asm-generic/word-at-a-time.h" class="js-navigation-open" data-name="VM670-IHO-TINYRCU" rel="nofollow">VM670-IHO-TINYRCU</a>
                   </h4>
                 </div>
                 <div class="commitish-item branch-commitish selector-item js-navigation-item js-navigation-target ">
                   <span class="mini-icon mini-icon-confirm"></span>
                   <h4>
-                      <a href="/mrg666/android_kernel_thunderc/blob/VS660/lib/strncpy_from_user.c" class="js-navigation-open" data-name="VS660" rel="nofollow">VS660</a>
+                      <a href="/mrg666/android_kernel_thunderc/blob/VS660/include/asm-generic/word-at-a-time.h" class="js-navigation-open" data-name="VS660" rel="nofollow">VS660</a>
                   </h4>
                 </div>
             </div>
@@ -352,37 +352,37 @@
                 <div class="commitish-item tag-commitish selector-item js-navigation-item js-navigation-target ">
                   <span class="mini-icon mini-icon-confirm"></span>
                   <h4>
-                      <a href="/mrg666/android_kernel_thunderc/blob/VM670-IHO-r1-release/lib/strncpy_from_user.c" class="js-navigation-open" data-name="VM670-IHO-r1-release" rel="nofollow">VM670-IHO-r1-release</a>
+                      <a href="/mrg666/android_kernel_thunderc/blob/VM670-IHO-r1-release/include/asm-generic/word-at-a-time.h" class="js-navigation-open" data-name="VM670-IHO-r1-release" rel="nofollow">VM670-IHO-r1-release</a>
                   </h4>
                 </div>
                 <div class="commitish-item tag-commitish selector-item js-navigation-item js-navigation-target ">
                   <span class="mini-icon mini-icon-confirm"></span>
                   <h4>
-                      <a href="/mrg666/android_kernel_thunderc/blob/VM670-IHO-r1.2-release/lib/strncpy_from_user.c" class="js-navigation-open" data-name="VM670-IHO-r1.2-release" rel="nofollow">VM670-IHO-r1.2-release</a>
+                      <a href="/mrg666/android_kernel_thunderc/blob/VM670-IHO-r1.2-release/include/asm-generic/word-at-a-time.h" class="js-navigation-open" data-name="VM670-IHO-r1.2-release" rel="nofollow">VM670-IHO-r1.2-release</a>
                   </h4>
                 </div>
                 <div class="commitish-item tag-commitish selector-item js-navigation-item js-navigation-target ">
                   <span class="mini-icon mini-icon-confirm"></span>
                   <h4>
-                      <a href="/mrg666/android_kernel_thunderc/blob/VM670-IHO-r1.1-release/lib/strncpy_from_user.c" class="js-navigation-open" data-name="VM670-IHO-r1.1-release" rel="nofollow">VM670-IHO-r1.1-release</a>
+                      <a href="/mrg666/android_kernel_thunderc/blob/VM670-IHO-r1.1-release/include/asm-generic/word-at-a-time.h" class="js-navigation-open" data-name="VM670-IHO-r1.1-release" rel="nofollow">VM670-IHO-r1.1-release</a>
                   </h4>
                 </div>
                 <div class="commitish-item tag-commitish selector-item js-navigation-item js-navigation-target ">
                   <span class="mini-icon mini-icon-confirm"></span>
                   <h4>
-                      <a href="/mrg666/android_kernel_thunderc/blob/LS670-VD/lib/strncpy_from_user.c" class="js-navigation-open" data-name="LS670-VD" rel="nofollow">LS670-VD</a>
+                      <a href="/mrg666/android_kernel_thunderc/blob/LS670-VD/include/asm-generic/word-at-a-time.h" class="js-navigation-open" data-name="LS670-VD" rel="nofollow">LS670-VD</a>
                   </h4>
                 </div>
                 <div class="commitish-item tag-commitish selector-item js-navigation-item js-navigation-target ">
                   <span class="mini-icon mini-icon-confirm"></span>
                   <h4>
-                      <a href="/mrg666/android_kernel_thunderc/blob/LS670-VC/lib/strncpy_from_user.c" class="js-navigation-open" data-name="LS670-VC" rel="nofollow">LS670-VC</a>
+                      <a href="/mrg666/android_kernel_thunderc/blob/LS670-VC/include/asm-generic/word-at-a-time.h" class="js-navigation-open" data-name="LS670-VC" rel="nofollow">LS670-VC</a>
                   </h4>
                 </div>
                 <div class="commitish-item tag-commitish selector-item js-navigation-item js-navigation-target ">
                   <span class="mini-icon mini-icon-confirm"></span>
                   <h4>
-                      <a href="/mrg666/android_kernel_thunderc/blob/LS670-V9/lib/strncpy_from_user.c" class="js-navigation-open" data-name="LS670-V9" rel="nofollow">LS670-V9</a>
+                      <a href="/mrg666/android_kernel_thunderc/blob/LS670-V9/include/asm-generic/word-at-a-time.h" class="js-navigation-open" data-name="LS670-V9" rel="nofollow">LS670-V9</a>
                   </h4>
                 </div>
             </div>
@@ -418,15 +418,15 @@
 
 
 
-<!-- block_view_fragment_key: views10/v8/blob:v21:b3cace62d449f0a3a5d6496a49657df7 -->
+<!-- block_view_fragment_key: views10/v8/blob:v21:ba23a755ff331936f25271dad89b2768 -->
   <div id="slider">
 
-    <div class="breadcrumb" data-path="lib/strncpy_from_user.c/">
-      <b itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb"><a href="/mrg666/android_kernel_thunderc/tree/f32a5c494065773ba2071859b26beec52f3852b7" class="js-rewrite-sha" itemprop="url"><span itemprop="title">android_kernel_thunderc</span></a></b> / <span itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb"><a href="/mrg666/android_kernel_thunderc/tree/f32a5c494065773ba2071859b26beec52f3852b7/lib" class="js-rewrite-sha" itemscope="url"><span itemprop="title">lib</span></a></span> / <strong class="final-path">strncpy_from_user.c</strong> <span class="js-clippy mini-icon mini-icon-clippy " data-clipboard-text="lib/strncpy_from_user.c" data-copied-hint="copied!" data-copy-hint="copy to clipboard"></span>
+    <div class="breadcrumb" data-path="include/asm-generic/word-at-a-time.h/">
+      <b itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb"><a href="/mrg666/android_kernel_thunderc/tree/f32a5c494065773ba2071859b26beec52f3852b7" class="js-rewrite-sha" itemprop="url"><span itemprop="title">android_kernel_thunderc</span></a></b> / <span itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb"><a href="/mrg666/android_kernel_thunderc/tree/f32a5c494065773ba2071859b26beec52f3852b7/include" class="js-rewrite-sha" itemscope="url"><span itemprop="title">include</span></a></span> / <span itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb"><a href="/mrg666/android_kernel_thunderc/tree/f32a5c494065773ba2071859b26beec52f3852b7/include/asm-generic" class="js-rewrite-sha" itemscope="url"><span itemprop="title">asm-generic</span></a></span> / <strong class="final-path">word-at-a-time.h</strong> <span class="js-clippy mini-icon mini-icon-clippy " data-clipboard-text="include/asm-generic/word-at-a-time.h" data-copied-hint="copied!" data-copy-hint="copy to clipboard"></span>
     </div>
 
 
-      <div class="commit file-history-tease" data-path="lib/strncpy_from_user.c/">
+      <div class="commit file-history-tease" data-path="include/asm-generic/word-at-a-time.h/">
         <img class="main-avatar" height="24" src="https://secure.gravatar.com/avatar/3326abccd235ff29541bd148d27a1661?s=140&amp;d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-140.png" width="24" />
         <span class="author"><a href="/mrg666">mrg666</a></span>
         <time class="js-relative-date" datetime="2012-07-08T16:09:33-07:00" title="2012-07-08 16:09:33">July 08, 2012</time>
@@ -450,7 +450,7 @@
       </div>
 
     <div class="frames">
-      <div class="frame frame-center" data-path="lib/strncpy_from_user.c/" data-permalink-url="/mrg666/android_kernel_thunderc/blob/f32a5c494065773ba2071859b26beec52f3852b7/lib/strncpy_from_user.c" data-title="android_kernel_thunderc/lib/strncpy_from_user.c at f32a5c494065773ba2071859b26beec52f3852b7 · mrg666/android_kernel_thunderc · GitHub" data-type="blob">
+      <div class="frame frame-center" data-path="include/asm-generic/word-at-a-time.h/" data-permalink-url="/mrg666/android_kernel_thunderc/blob/f32a5c494065773ba2071859b26beec52f3852b7/include/asm-generic/word-at-a-time.h" data-title="android_kernel_thunderc/include/asm-generic/word-at-a-time.h at f32a5c494065773ba2071859b26beec52f3852b7 · mrg666/android_kernel_thunderc · GitHub" data-type="blob">
 
         <div id="files" class="bubble">
           <div class="file">
@@ -458,22 +458,22 @@
               <div class="info">
                 <span class="icon"><b class="mini-icon mini-icon-text-file"></b></span>
                 <span class="mode" title="File Mode">100755</span>
-                  <span>114 lines (99 sloc)</span>
-                <span>2.954 kb</span>
+                  <span>53 lines (43 sloc)</span>
+                <span>1.189 kb</span>
               </div>
               <ul class="button-group actions">
                   <li>
-                    <a class="grouped-button file-edit-link minibutton bigger lighter js-rewrite-sha" href="/mrg666/android_kernel_thunderc/edit/f32a5c494065773ba2071859b26beec52f3852b7/lib/strncpy_from_user.c" data-method="post" rel="nofollow" data-hotkey="e">Edit this file</a>
+                    <a class="grouped-button file-edit-link minibutton bigger lighter js-rewrite-sha" href="/mrg666/android_kernel_thunderc/edit/f32a5c494065773ba2071859b26beec52f3852b7/include/asm-generic/word-at-a-time.h" data-method="post" rel="nofollow" data-hotkey="e">Edit this file</a>
                   </li>
 
                 <li>
-                  <a href="/mrg666/android_kernel_thunderc/raw/f32a5c494065773ba2071859b26beec52f3852b7/lib/strncpy_from_user.c" class="minibutton btn-raw grouped-button bigger lighter" id="raw-url">Raw</a>
+                  <a href="/mrg666/android_kernel_thunderc/raw/f32a5c494065773ba2071859b26beec52f3852b7/include/asm-generic/word-at-a-time.h" class="minibutton btn-raw grouped-button bigger lighter" id="raw-url">Raw</a>
                 </li>
                   <li>
-                    <a href="/mrg666/android_kernel_thunderc/blame/f32a5c494065773ba2071859b26beec52f3852b7/lib/strncpy_from_user.c" class="minibutton btn-blame grouped-button bigger lighter">Blame</a>
+                    <a href="/mrg666/android_kernel_thunderc/blame/f32a5c494065773ba2071859b26beec52f3852b7/include/asm-generic/word-at-a-time.h" class="minibutton btn-blame grouped-button bigger lighter">Blame</a>
                   </li>
                 <li>
-                  <a href="/mrg666/android_kernel_thunderc/commits/f32a5c494065773ba2071859b26beec52f3852b7/lib/strncpy_from_user.c" class="minibutton btn-history grouped-button bigger lighter" rel="nofollow">History</a>
+                  <a href="/mrg666/android_kernel_thunderc/commits/f32a5c494065773ba2071859b26beec52f3852b7/include/asm-generic/word-at-a-time.h" class="minibutton btn-history grouped-button bigger lighter" rel="nofollow">History</a>
                 </li>
               </ul>
             </div>
@@ -533,71 +533,10 @@
 <span id="L50" rel="#L50">50</span>
 <span id="L51" rel="#L51">51</span>
 <span id="L52" rel="#L52">52</span>
-<span id="L53" rel="#L53">53</span>
-<span id="L54" rel="#L54">54</span>
-<span id="L55" rel="#L55">55</span>
-<span id="L56" rel="#L56">56</span>
-<span id="L57" rel="#L57">57</span>
-<span id="L58" rel="#L58">58</span>
-<span id="L59" rel="#L59">59</span>
-<span id="L60" rel="#L60">60</span>
-<span id="L61" rel="#L61">61</span>
-<span id="L62" rel="#L62">62</span>
-<span id="L63" rel="#L63">63</span>
-<span id="L64" rel="#L64">64</span>
-<span id="L65" rel="#L65">65</span>
-<span id="L66" rel="#L66">66</span>
-<span id="L67" rel="#L67">67</span>
-<span id="L68" rel="#L68">68</span>
-<span id="L69" rel="#L69">69</span>
-<span id="L70" rel="#L70">70</span>
-<span id="L71" rel="#L71">71</span>
-<span id="L72" rel="#L72">72</span>
-<span id="L73" rel="#L73">73</span>
-<span id="L74" rel="#L74">74</span>
-<span id="L75" rel="#L75">75</span>
-<span id="L76" rel="#L76">76</span>
-<span id="L77" rel="#L77">77</span>
-<span id="L78" rel="#L78">78</span>
-<span id="L79" rel="#L79">79</span>
-<span id="L80" rel="#L80">80</span>
-<span id="L81" rel="#L81">81</span>
-<span id="L82" rel="#L82">82</span>
-<span id="L83" rel="#L83">83</span>
-<span id="L84" rel="#L84">84</span>
-<span id="L85" rel="#L85">85</span>
-<span id="L86" rel="#L86">86</span>
-<span id="L87" rel="#L87">87</span>
-<span id="L88" rel="#L88">88</span>
-<span id="L89" rel="#L89">89</span>
-<span id="L90" rel="#L90">90</span>
-<span id="L91" rel="#L91">91</span>
-<span id="L92" rel="#L92">92</span>
-<span id="L93" rel="#L93">93</span>
-<span id="L94" rel="#L94">94</span>
-<span id="L95" rel="#L95">95</span>
-<span id="L96" rel="#L96">96</span>
-<span id="L97" rel="#L97">97</span>
-<span id="L98" rel="#L98">98</span>
-<span id="L99" rel="#L99">99</span>
-<span id="L100" rel="#L100">100</span>
-<span id="L101" rel="#L101">101</span>
-<span id="L102" rel="#L102">102</span>
-<span id="L103" rel="#L103">103</span>
-<span id="L104" rel="#L104">104</span>
-<span id="L105" rel="#L105">105</span>
-<span id="L106" rel="#L106">106</span>
-<span id="L107" rel="#L107">107</span>
-<span id="L108" rel="#L108">108</span>
-<span id="L109" rel="#L109">109</span>
-<span id="L110" rel="#L110">110</span>
-<span id="L111" rel="#L111">111</span>
-<span id="L112" rel="#L112">112</span>
-<span id="L113" rel="#L113">113</span>
 </pre>
           </td>
           <td width="100%">
-                <div class="highlight"><pre><div class='line' id='LC1'><span class="cp">#include &lt;linux/module.h&gt;</span></div><div class='line' id='LC2'><span class="cp">#include &lt;linux/uaccess.h&gt;</span></div><div class='line' id='LC3'><span class="cp">#include &lt;linux/kernel.h&gt;</span></div><div class='line' id='LC4'><span class="cp">#include &lt;linux/errno.h&gt;</span></div><div class='line' id='LC5'><br/></div><div class='line' id='LC6'><span class="cp">#include &lt;asm/byteorder.h&gt;</span></div><div class='line' id='LC7'><span class="cp">#include &lt;asm/word-at-a-time.h&gt;</span></div><div class='line' id='LC8'><br/></div><div class='line' id='LC9'><span class="cp">#ifdef CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS</span></div><div class='line' id='LC10'><span class="cp">#define IS_UNALIGNED(src, dst)	0</span></div><div class='line' id='LC11'><span class="cp">#else</span></div><div class='line' id='LC12'><span class="cp">#define IS_UNALIGNED(src, dst)	\</span></div><div class='line' id='LC13'><span class="cp">	(((long) dst | (long) src) &amp; (sizeof(long) - 1))</span></div><div class='line' id='LC14'><span class="cp">#endif</span></div><div class='line' id='LC15'><br/></div><div class='line' id='LC16'><span class="cm">/*</span></div><div class='line' id='LC17'><span class="cm"> * Do a strncpy, return length of string without final &#39;\0&#39;.</span></div><div class='line' id='LC18'><span class="cm"> * &#39;count&#39; is the user-supplied count (return &#39;count&#39; if we</span></div><div class='line' id='LC19'><span class="cm"> * hit it), &#39;max&#39; is the address space maximum (and we return</span></div><div class='line' id='LC20'><span class="cm"> * -EFAULT if we hit it).</span></div><div class='line' id='LC21'><span class="cm"> */</span></div><div class='line' id='LC22'><span class="k">static</span> <span class="kr">inline</span> <span class="kt">long</span> <span class="nf">do_strncpy_from_user</span><span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="n">dst</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="n">__user</span> <span class="o">*</span><span class="n">src</span><span class="p">,</span> <span class="kt">long</span> <span class="n">count</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">max</span><span class="p">)</span></div><div class='line' id='LC23'><span class="p">{</span></div><div class='line' id='LC24'>	<span class="k">const</span> <span class="k">struct</span> <span class="n">word_at_a_time</span> <span class="n">constants</span> <span class="o">=</span> <span class="n">WORD_AT_A_TIME_CONSTANTS</span><span class="p">;</span></div><div class='line' id='LC25'>	<span class="kt">long</span> <span class="n">res</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span></div><div class='line' id='LC26'><br/></div><div class='line' id='LC27'>	<span class="cm">/*</span></div><div class='line' id='LC28'><span class="cm">	 * Truncate &#39;max&#39; to the user-specified limit, so that</span></div><div class='line' id='LC29'><span class="cm">	 * we only have one limit we need to check in the loop</span></div><div class='line' id='LC30'><span class="cm">	 */</span></div><div class='line' id='LC31'>	<span class="k">if</span> <span class="p">(</span><span class="n">max</span> <span class="o">&gt;</span> <span class="n">count</span><span class="p">)</span></div><div class='line' id='LC32'>		<span class="n">max</span> <span class="o">=</span> <span class="n">count</span><span class="p">;</span></div><div class='line' id='LC33'><br/></div><div class='line' id='LC34'>	<span class="k">if</span> <span class="p">(</span><span class="n">IS_UNALIGNED</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">dst</span><span class="p">))</span></div><div class='line' id='LC35'>		<span class="k">goto</span> <span class="n">byte_at_a_time</span><span class="p">;</span></div><div class='line' id='LC36'><br/></div><div class='line' id='LC37'>	<span class="k">while</span> <span class="p">(</span><span class="n">max</span> <span class="o">&gt;=</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="p">))</span> <span class="p">{</span></div><div class='line' id='LC38'>		<span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">c</span><span class="p">,</span> <span class="n">data</span><span class="p">;</span></div><div class='line' id='LC39'><br/></div><div class='line' id='LC40'>		<span class="cm">/* Fall back to byte-at-a-time if we get a page fault */</span></div><div class='line' id='LC41'>		<span class="k">if</span> <span class="p">(</span><span class="n">unlikely</span><span class="p">(</span><span class="n">__get_user</span><span class="p">(</span><span class="n">c</span><span class="p">,(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">__user</span> <span class="o">*</span><span class="p">)(</span><span class="n">src</span><span class="o">+</span><span class="n">res</span><span class="p">))))</span></div><div class='line' id='LC42'>			<span class="k">break</span><span class="p">;</span></div><div class='line' id='LC43'>		<span class="o">*</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">*</span><span class="p">)(</span><span class="n">dst</span><span class="o">+</span><span class="n">res</span><span class="p">)</span> <span class="o">=</span> <span class="n">c</span><span class="p">;</span></div><div class='line' id='LC44'>		<span class="k">if</span> <span class="p">(</span><span class="n">has_zero</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">data</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">constants</span><span class="p">))</span> <span class="p">{</span></div><div class='line' id='LC45'>			<span class="n">data</span> <span class="o">=</span> <span class="n">prep_zero_mask</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">constants</span><span class="p">);</span></div><div class='line' id='LC46'>			<span class="n">data</span> <span class="o">=</span> <span class="n">create_zero_mask</span><span class="p">(</span><span class="n">data</span><span class="p">);</span></div><div class='line' id='LC47'>			<span class="k">return</span> <span class="n">res</span> <span class="o">+</span> <span class="n">find_zero</span><span class="p">(</span><span class="n">data</span><span class="p">);</span></div><div class='line' id='LC48'>		<span class="p">}</span></div><div class='line' id='LC49'>		<span class="n">res</span> <span class="o">+=</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="p">);</span></div><div class='line' id='LC50'>		<span class="n">max</span> <span class="o">-=</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="p">);</span></div><div class='line' id='LC51'>	<span class="p">}</span></div><div class='line' id='LC52'><br/></div><div class='line' id='LC53'><span class="nl">byte_at_a_time:</span></div><div class='line' id='LC54'>	<span class="k">while</span> <span class="p">(</span><span class="n">max</span><span class="p">)</span> <span class="p">{</span></div><div class='line' id='LC55'>		<span class="kt">char</span> <span class="n">c</span><span class="p">;</span></div><div class='line' id='LC56'><br/></div><div class='line' id='LC57'>		<span class="k">if</span> <span class="p">(</span><span class="n">unlikely</span><span class="p">(</span><span class="n">__get_user</span><span class="p">(</span><span class="n">c</span><span class="p">,</span><span class="n">src</span><span class="o">+</span><span class="n">res</span><span class="p">)))</span></div><div class='line' id='LC58'>			<span class="k">return</span> <span class="o">-</span><span class="n">EFAULT</span><span class="p">;</span></div><div class='line' id='LC59'>		<span class="n">dst</span><span class="p">[</span><span class="n">res</span><span class="p">]</span> <span class="o">=</span> <span class="n">c</span><span class="p">;</span></div><div class='line' id='LC60'>		<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">c</span><span class="p">)</span></div><div class='line' id='LC61'>			<span class="k">return</span> <span class="n">res</span><span class="p">;</span></div><div class='line' id='LC62'>		<span class="n">res</span><span class="o">++</span><span class="p">;</span></div><div class='line' id='LC63'>		<span class="n">max</span><span class="o">--</span><span class="p">;</span></div><div class='line' id='LC64'>	<span class="p">}</span></div><div class='line' id='LC65'><br/></div><div class='line' id='LC66'>	<span class="cm">/*</span></div><div class='line' id='LC67'><span class="cm">	 * Uhhuh. We hit &#39;max&#39;. But was that the user-specified maximum</span></div><div class='line' id='LC68'><span class="cm">	 * too? If so, that&#39;s ok - we got as much as the user asked for.</span></div><div class='line' id='LC69'><span class="cm">	 */</span></div><div class='line' id='LC70'>	<span class="k">if</span> <span class="p">(</span><span class="n">res</span> <span class="o">&gt;=</span> <span class="n">count</span><span class="p">)</span></div><div class='line' id='LC71'>		<span class="k">return</span> <span class="n">res</span><span class="p">;</span></div><div class='line' id='LC72'><br/></div><div class='line' id='LC73'>	<span class="cm">/*</span></div><div class='line' id='LC74'><span class="cm">	 * Nope: we hit the address space limit, and we still had more</span></div><div class='line' id='LC75'><span class="cm">	 * characters the caller would have wanted. That&#39;s an EFAULT.</span></div><div class='line' id='LC76'><span class="cm">	 */</span></div><div class='line' id='LC77'>	<span class="k">return</span> <span class="o">-</span><span class="n">EFAULT</span><span class="p">;</span></div><div class='line' id='LC78'><span class="p">}</span></div><div class='line' id='LC79'><br/></div><div class='line' id='LC80'><span class="cm">/**</span></div><div class='line' id='LC81'><span class="cm"> * strncpy_from_user: - Copy a NUL terminated string from userspace.</span></div><div class='line' id='LC82'><span class="cm"> * @dst:   Destination address, in kernel space.  This buffer must be at</span></div><div class='line' id='LC83'><span class="cm"> *         least @count bytes long.</span></div><div class='line' id='LC84'><span class="cm"> * @src:   Source address, in user space.</span></div><div class='line' id='LC85'><span class="cm"> * @count: Maximum number of bytes to copy, including the trailing NUL.</span></div><div class='line' id='LC86'><span class="cm"> *</span></div><div class='line' id='LC87'><span class="cm"> * Copies a NUL-terminated string from userspace to kernel space.</span></div><div class='line' id='LC88'><span class="cm"> *</span></div><div class='line' id='LC89'><span class="cm"> * On success, returns the length of the string (not including the trailing</span></div><div class='line' id='LC90'><span class="cm"> * NUL).</span></div><div class='line' id='LC91'><span class="cm"> *</span></div><div class='line' id='LC92'><span class="cm"> * If access to userspace fails, returns -EFAULT (some data may have been</span></div><div class='line' id='LC93'><span class="cm"> * copied).</span></div><div class='line' id='LC94'><span class="cm"> *</span></div><div class='line' id='LC95'><span class="cm"> * If @count is smaller than the length of the string, copies @count bytes</span></div><div class='line' id='LC96'><span class="cm"> * and returns @count.</span></div><div class='line' id='LC97'><span class="cm"> */</span></div><div class='line' id='LC98'><span class="kt">long</span> <span class="nf">strncpy_from_user</span><span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="n">dst</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="n">__user</span> <span class="o">*</span><span class="n">src</span><span class="p">,</span> <span class="kt">long</span> <span class="n">count</span><span class="p">)</span></div><div class='line' id='LC99'><span class="p">{</span></div><div class='line' id='LC100'>	<span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">max_addr</span><span class="p">,</span> <span class="n">src_addr</span><span class="p">;</span></div><div class='line' id='LC101'><br/></div><div class='line' id='LC102'>	<span class="k">if</span> <span class="p">(</span><span class="n">unlikely</span><span class="p">(</span><span class="n">count</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">))</span></div><div class='line' id='LC103'>		<span class="k">return</span> <span class="mi">0</span><span class="p">;</span></div><div class='line' id='LC104'><br/></div><div class='line' id='LC105'>	<span class="n">max_addr</span> <span class="o">=</span> <span class="n">user_addr_max</span><span class="p">();</span></div><div class='line' id='LC106'>	<span class="n">src_addr</span> <span class="o">=</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="p">)</span><span class="n">src</span><span class="p">;</span></div><div class='line' id='LC107'>	<span class="k">if</span> <span class="p">(</span><span class="n">likely</span><span class="p">(</span><span class="n">src_addr</span> <span class="o">&lt;</span> <span class="n">max_addr</span><span class="p">))</span> <span class="p">{</span></div><div class='line' id='LC108'>		<span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">max</span> <span class="o">=</span> <span class="n">max_addr</span> <span class="o">-</span> <span class="n">src_addr</span><span class="p">;</span></div><div class='line' id='LC109'>		<span class="k">return</span> <span class="n">do_strncpy_from_user</span><span class="p">(</span><span class="n">dst</span><span class="p">,</span> <span class="n">src</span><span class="p">,</span> <span class="n">count</span><span class="p">,</span> <span class="n">max</span><span class="p">);</span></div><div class='line' id='LC110'>	<span class="p">}</span></div><div class='line' id='LC111'>	<span class="k">return</span> <span class="o">-</span><span class="n">EFAULT</span><span class="p">;</span></div><div class='line' id='LC112'><span class="p">}</span></div><div class='line' id='LC113'><span class="n">EXPORT_SYMBOL</span><span class="p">(</span><span class="n">strncpy_from_user</span><span class="p">);</span></div></pre></div>
+                <div class="highlight"><pre><div class='line' id='LC1'><span class="cp">#ifndef _ASM_WORD_AT_A_TIME_H</span></div><div class='line' id='LC2'><span class="cp">#define _ASM_WORD_AT_A_TIME_H</span></div><div class='line' id='LC3'><br/></div><div class='line' id='LC4'><span class="cm">/*</span></div><div class='line' id='LC5'><span class="cm"> * This says &quot;generic&quot;, but it&#39;s actually big-endian only.</span></div><div class='line' id='LC6'><span class="cm"> * Little-endian can use more efficient versions of these</span></div><div class='line' id='LC7'><span class="cm"> * interfaces, see for example</span></div><div class='line' id='LC8'><span class="cm"> *	 arch/x86/include/asm/word-at-a-time.h</span></div><div class='line' id='LC9'><span class="cm"> * for those.</span></div><div class='line' id='LC10'><span class="cm"> */</span></div><div class='line' id='LC11'><br/></div><div class='line' id='LC12'><span class="cp">#include &lt;linux/kernel.h&gt;</span></div><div class='line' id='LC13'><br/></div><div class='line' id='LC14'><span class="k">struct</span> <span class="n">word_at_a_time</span> <span class="p">{</span></div><div class='line' id='LC15'>	<span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">high_bits</span><span class="p">,</span> <span class="n">low_bits</span><span class="p">;</span></div><div class='line' id='LC16'><span class="p">};</span></div><div class='line' id='LC17'><br/></div><div class='line' id='LC18'><span class="cp">#define WORD_AT_A_TIME_CONSTANTS { REPEAT_BYTE(0xfe) + 1, REPEAT_BYTE(0x7f) }</span></div><div class='line' id='LC19'><br/></div><div class='line' id='LC20'><span class="cm">/* Bit set in the bytes that have a zero */</span></div><div class='line' id='LC21'><span class="k">static</span> <span class="kr">inline</span> <span class="kt">long</span> <span class="nf">prep_zero_mask</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">val</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">rhs</span><span class="p">,</span> <span class="k">const</span> <span class="k">struct</span> <span class="n">word_at_a_time</span> <span class="o">*</span><span class="n">c</span><span class="p">)</span></div><div class='line' id='LC22'><span class="p">{</span></div><div class='line' id='LC23'>	<span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">val</span> <span class="o">&amp;</span> <span class="n">c</span><span class="o">-&gt;</span><span class="n">low_bits</span><span class="p">)</span> <span class="o">+</span> <span class="n">c</span><span class="o">-&gt;</span><span class="n">low_bits</span><span class="p">;</span></div><div class='line' id='LC24'>	<span class="k">return</span> <span class="o">~</span><span class="p">(</span><span class="n">mask</span> <span class="o">|</span> <span class="n">rhs</span><span class="p">);</span></div><div class='line' id='LC25'><span class="p">}</span></div><div class='line' id='LC26'><br/></div><div class='line' id='LC27'><span class="cp">#define create_zero_mask(mask) (mask)</span></div><div class='line' id='LC28'><br/></div><div class='line' id='LC29'><span class="k">static</span> <span class="kr">inline</span> <span class="kt">long</span> <span class="nf">find_zero</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">mask</span><span class="p">)</span></div><div class='line' id='LC30'><span class="p">{</span></div><div class='line' id='LC31'>	<span class="kt">long</span> <span class="n">byte</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span></div><div class='line' id='LC32'><span class="cp">#ifdef CONFIG_64BIT</span></div><div class='line' id='LC33'>	<span class="k">if</span> <span class="p">(</span><span class="n">mask</span> <span class="o">&gt;&gt;</span> <span class="mi">32</span><span class="p">)</span></div><div class='line' id='LC34'>		<span class="n">mask</span> <span class="o">&gt;&gt;=</span> <span class="mi">32</span><span class="p">;</span></div><div class='line' id='LC35'>	<span class="k">else</span></div><div class='line' id='LC36'>		<span class="n">byte</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span></div><div class='line' id='LC37'><span class="cp">#endif</span></div><div class='line' id='LC38'>	<span class="k">if</span> <span class="p">(</span><span class="n">mask</span> <span class="o">&gt;&gt;</span> <span class="mi">16</span><span class="p">)</span></div><div class='line' id='LC39'>		<span class="n">mask</span> <span class="o">&gt;&gt;=</span> <span class="mi">16</span><span class="p">;</span></div><div class='line' id='LC40'>	<span class="k">else</span></div><div class='line' id='LC41'>		<span class="n">byte</span> <span class="o">+=</span> <span class="mi">2</span><span class="p">;</span></div><div class='line' id='LC42'>	<span class="k">return</span> <span class="p">(</span><span class="n">mask</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">?</span> <span class="n">byte</span> <span class="o">:</span> <span class="n">byte</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span></div><div class='line' id='LC43'><span class="p">}</span></div><div class='line' id='LC44'><br/></div><div class='line' id='LC45'><span class="k">static</span> <span class="kr">inline</span> <span class="n">bool</span> <span class="nf">has_zero</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">val</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">*</span><span class="n">data</span><span class="p">,</span> <span class="k">const</span> <span class="k">struct</span> <span class="n">word_at_a_time</span> <span class="o">*</span><span class="n">c</span><span class="p">)</span></div><div class='line' id='LC46'><span class="p">{</span></div><div class='line' id='LC47'>	<span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">rhs</span> <span class="o">=</span> <span class="n">val</span> <span class="o">|</span> <span class="n">c</span><span class="o">-&gt;</span><span class="n">low_bits</span><span class="p">;</span></div><div class='line' id='LC48'>	<span class="o">*</span><span class="n">data</span> <span class="o">=</span> <span class="n">rhs</span><span class="p">;</span></div><div class='line' id='LC49'>	<span class="k">return</span> <span class="p">(</span><span class="n">val</span> <span class="o">+</span> <span class="n">c</span><span class="o">-&gt;</span><span class="n">high_bits</span><span class="p">)</span> <span class="o">&amp;</span> <span class="o">~</span><span class="n">rhs</span><span class="p">;</span></div><div class='line' id='LC50'><span class="p">}</span></div><div class='line' id='LC51'><br/></div><div class='line' id='LC52'><span class="cp">#endif </span><span class="cm">/* _ASM_WORD_AT_A_TIME_H */</span><span class="cp"></span></div></pre></div>
           </td>
         </tr>
       </table>
@@ -683,7 +622,7 @@
           <li><a href="https://github.com/security">Security</a></li>
       </ul>
 
-      <p>&copy; 2012 <span title="0.16644s from fe4.rs.github.com">GitHub</span> Inc. All rights reserved.</p>
+      <p>&copy; 2012 <span title="0.16574s from fe4.rs.github.com">GitHub</span> Inc. All rights reserved.</p>
     </div><!-- /#legal or /#legal_ie-->
 
       <div class="sponsor">
@@ -1054,7 +993,7 @@ I think you should use an
     
     
     
-    <span id='server_response_time' data-time='0.16888' data-host='fe4'></span>
+    <span id='server_response_time' data-time='0.16790' data-host='fe4'></span>
   </body>
 </html>
 
