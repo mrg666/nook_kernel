@@ -1,7 +1,7 @@
 #
 # Automatically generated make config: don't edit
 # Linux kernel version: 2.6.32.9
-# Mon Jul  9 08:27:02 2012
+# Mon Jul  9 09:53:42 2012
 #
 CONFIG_ARM=y
 CONFIG_SYS_SUPPORTS_APM_EMULATION=y
@@ -1936,6 +1936,7 @@ CONFIG_BRIDGE_CACHE_LINE_CHECK=y
 #
 # File systems
 #
+CONFIG_DCACHE_WORD_ACCESS=y
 CONFIG_EXT2_FS=y
 # CONFIG_EXT2_FS_XATTR is not set
 # CONFIG_EXT2_FS_XIP is not set
